@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/mechascopic/static/css/main.9f6db77a.chunk.css",
-    "main.js": "/mechascopic/static/js/main.4f01a613.chunk.js",
-    "main.js.map": "/mechascopic/static/js/main.4f01a613.chunk.js.map",
+    "main.js": "/mechascopic/static/js/main.1465f601.chunk.js",
+    "main.js.map": "/mechascopic/static/js/main.1465f601.chunk.js.map",
     "runtime-main.js": "/mechascopic/static/js/runtime-main.962aff02.js",
     "runtime-main.js.map": "/mechascopic/static/js/runtime-main.962aff02.js.map",
     "static/css/2.c27241dc.chunk.css": "/mechascopic/static/css/2.c27241dc.chunk.css",
-    "static/js/2.dd128c90.chunk.js": "/mechascopic/static/js/2.dd128c90.chunk.js",
-    "static/js/2.dd128c90.chunk.js.map": "/mechascopic/static/js/2.dd128c90.chunk.js.map",
+    "static/js/2.5763d473.chunk.js": "/mechascopic/static/js/2.5763d473.chunk.js",
+    "static/js/2.5763d473.chunk.js.map": "/mechascopic/static/js/2.5763d473.chunk.js.map",
     "static/js/3.4f842fbc.chunk.js": "/mechascopic/static/js/3.4f842fbc.chunk.js",
     "static/js/3.4f842fbc.chunk.js.map": "/mechascopic/static/js/3.4f842fbc.chunk.js.map",
     "index.html": "/mechascopic/index.html",
     "static/css/2.c27241dc.chunk.css.map": "/mechascopic/static/css/2.c27241dc.chunk.css.map",
     "static/css/main.9f6db77a.chunk.css.map": "/mechascopic/static/css/main.9f6db77a.chunk.css.map",
-    "static/js/2.dd128c90.chunk.js.LICENSE.txt": "/mechascopic/static/js/2.dd128c90.chunk.js.LICENSE.txt"
+    "static/js/2.5763d473.chunk.js.LICENSE.txt": "/mechascopic/static/js/2.5763d473.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.962aff02.js",
     "static/css/2.c27241dc.chunk.css",
-    "static/js/2.dd128c90.chunk.js",
+    "static/js/2.5763d473.chunk.js",
     "static/css/main.9f6db77a.chunk.css",
-    "static/js/main.4f01a613.chunk.js"
+    "static/js/main.1465f601.chunk.js"
   ]
 }
