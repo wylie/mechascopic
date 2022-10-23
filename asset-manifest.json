@@ -1,22 +1,25 @@
 {
   "files": {
-    "main.css": "/teresafisherphd/static/css/main.64e844da.chunk.css",
-    "main.js": "/teresafisherphd/static/js/main.a7de4474.chunk.js",
-    "main.js.map": "/teresafisherphd/static/js/main.a7de4474.chunk.js.map",
-    "runtime-main.js": "/teresafisherphd/static/js/runtime-main.e6e6b074.js",
-    "runtime-main.js.map": "/teresafisherphd/static/js/runtime-main.e6e6b074.js.map",
-    "static/js/2.c2680e4c.chunk.js": "/teresafisherphd/static/js/2.c2680e4c.chunk.js",
-    "static/js/2.c2680e4c.chunk.js.map": "/teresafisherphd/static/js/2.c2680e4c.chunk.js.map",
-    "static/js/3.55334685.chunk.js": "/teresafisherphd/static/js/3.55334685.chunk.js",
-    "static/js/3.55334685.chunk.js.map": "/teresafisherphd/static/js/3.55334685.chunk.js.map",
-    "index.html": "/teresafisherphd/index.html",
-    "static/css/main.64e844da.chunk.css.map": "/teresafisherphd/static/css/main.64e844da.chunk.css.map",
-    "static/js/2.c2680e4c.chunk.js.LICENSE.txt": "/teresafisherphd/static/js/2.c2680e4c.chunk.js.LICENSE.txt"
+    "main.css": "/mechascopic/static/css/main.9f6db77a.chunk.css",
+    "main.js": "/mechascopic/static/js/main.4f01a613.chunk.js",
+    "main.js.map": "/mechascopic/static/js/main.4f01a613.chunk.js.map",
+    "runtime-main.js": "/mechascopic/static/js/runtime-main.962aff02.js",
+    "runtime-main.js.map": "/mechascopic/static/js/runtime-main.962aff02.js.map",
+    "static/css/2.c27241dc.chunk.css": "/mechascopic/static/css/2.c27241dc.chunk.css",
+    "static/js/2.dd128c90.chunk.js": "/mechascopic/static/js/2.dd128c90.chunk.js",
+    "static/js/2.dd128c90.chunk.js.map": "/mechascopic/static/js/2.dd128c90.chunk.js.map",
+    "static/js/3.4f842fbc.chunk.js": "/mechascopic/static/js/3.4f842fbc.chunk.js",
+    "static/js/3.4f842fbc.chunk.js.map": "/mechascopic/static/js/3.4f842fbc.chunk.js.map",
+    "index.html": "/mechascopic/index.html",
+    "static/css/2.c27241dc.chunk.css.map": "/mechascopic/static/css/2.c27241dc.chunk.css.map",
+    "static/css/main.9f6db77a.chunk.css.map": "/mechascopic/static/css/main.9f6db77a.chunk.css.map",
+    "static/js/2.dd128c90.chunk.js.LICENSE.txt": "/mechascopic/static/js/2.dd128c90.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e6e6b074.js",
-    "static/js/2.c2680e4c.chunk.js",
-    "static/css/main.64e844da.chunk.css",
-    "static/js/main.a7de4474.chunk.js"
+    "static/js/runtime-main.962aff02.js",
+    "static/css/2.c27241dc.chunk.css",
+    "static/js/2.dd128c90.chunk.js",
+    "static/css/main.9f6db77a.chunk.css",
+    "static/js/main.4f01a613.chunk.js"
   ]
 }
