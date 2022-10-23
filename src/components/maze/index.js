@@ -6,7 +6,6 @@ import { Controls,
          Reset,
          Pause,
          Sound,
-         Carts,
          Fullscreen } from 'react-pico-8/buttons'
 import 'react-pico-8/styles.css'
 
@@ -15,7 +14,7 @@ import { MazeStyled } from "./styled.js";
 const Maze = ({ className = "", children = "", ...mazeProps }) => {
   return (
     <MazeStyled className={cn(className)} {...mazeProps}>
-      <Pico8 src="./maze.js"
+      <Pico8 src="maze.js"
         autoPlay={true}
         legacyButtons={false}
         hideCursor={false}
@@ -23,13 +22,12 @@ const Maze = ({ className = "", children = "", ...mazeProps }) => {
         blockKeys={false}
         usePointer={true}
         unpauseOnReset={true}
-        placeholder="./placeholder.png"
+        placeholder="placeholder.png"
       >
         <Controls/>
         <Reset/>
         <Pause/>
         <Sound/>
-        <Carts/>
         <Fullscreen/>
       </Pico8>
     </MazeStyled>
