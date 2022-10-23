@@ -5,8 +5,7 @@ import Pico8 from 'react-pico-8'
 import { Controls,
          Reset,
          Pause,
-         Sound,
-         Fullscreen } from 'react-pico-8/buttons'
+         Sound } from 'react-pico-8/buttons'
 import 'react-pico-8/styles.css'
 
 import { MazeStyled } from "./styled.js";
