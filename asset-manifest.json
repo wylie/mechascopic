@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/teresafisherphd/static/css/main.64e844da.chunk.css",
+    "main.js": "/teresafisherphd/static/js/main.a7de4474.chunk.js",
+    "main.js.map": "/teresafisherphd/static/js/main.a7de4474.chunk.js.map",
+    "runtime-main.js": "/teresafisherphd/static/js/runtime-main.e6e6b074.js",
+    "runtime-main.js.map": "/teresafisherphd/static/js/runtime-main.e6e6b074.js.map",
+    "static/js/2.c2680e4c.chunk.js": "/teresafisherphd/static/js/2.c2680e4c.chunk.js",
+    "static/js/2.c2680e4c.chunk.js.map": "/teresafisherphd/static/js/2.c2680e4c.chunk.js.map",
+    "static/js/3.55334685.chunk.js": "/teresafisherphd/static/js/3.55334685.chunk.js",
+    "static/js/3.55334685.chunk.js.map": "/teresafisherphd/static/js/3.55334685.chunk.js.map",
+    "index.html": "/teresafisherphd/index.html",
+    "static/css/main.64e844da.chunk.css.map": "/teresafisherphd/static/css/main.64e844da.chunk.css.map",
+    "static/js/2.c2680e4c.chunk.js.LICENSE.txt": "/teresafisherphd/static/js/2.c2680e4c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e6e6b074.js",
+    "static/js/2.c2680e4c.chunk.js",
+    "static/css/main.64e844da.chunk.css",
+    "static/js/main.a7de4474.chunk.js"
+  ]
+}
