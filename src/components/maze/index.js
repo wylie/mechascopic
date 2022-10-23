@@ -17,7 +17,7 @@ const Maze = ({ className = "", children = "", ...mazeProps }) => {
       <Pico8 src="./maze.js"
         autoPlay={true}
         legacyButtons={false}
-        hideCursor={false}
+        hideCursor={true}
         center={true}
         blockKeys={false}
         usePointer={true}
@@ -28,7 +28,6 @@ const Maze = ({ className = "", children = "", ...mazeProps }) => {
         <Reset/>
         <Pause/>
         <Sound/>
-        <Fullscreen/>
       </Pico8>
     </MazeStyled>
   );
