@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-import { LandingStyled } from "./styled.js";
+import { LandingH1, LandingHr } from "./styled.js";
 
 const Landing = ({ className = "", children = "", ...landingProps }) => {
   return (
-    <LandingStyled className={cn(className)} {...landingProps}>
-      Mechascopic
-    </LandingStyled>
+    <>
+      <LandingH1>Mechascopic</LandingH1>
+      <LandingHr />
+    </>
   );
 };
 
