@@ -1,8 +1,8 @@
 :root {
   color-scheme: light dark;
-  --text-color-dark: #333;
-  --text-color-light: #efefef;
-  --background-color-dark: #efefef;
+  --text-color-dark: #aaa;
+  --text-color-light: #333;
+  --background-color-dark: #aaa;
   --background-color-light: #333;
 }
 
