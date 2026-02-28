@@ -8,8 +8,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,7 +20,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Deploy to GitHub Pages
-        uses: withastro/action@v2
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          deploy-branch: gh-pages
-          build-dir: ./dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
