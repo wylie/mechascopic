@@ -2,8 +2,9 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
+const isProd = process.env.NODE_ENV === "production";
 export default defineConfig({
-  site: "https://wylie.github.io/mechascopic/", // Update if using a custom domain
+  site: isProd ? "https://wylie.github.io/mechascopic/" : "http://localhost:4321/",
   integrations: [sitemap()],
-  base: "/mechascopic/"
+  base: isProd ? "/mechascopic/" : "/",
 });
