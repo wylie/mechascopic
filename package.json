@@ -1,0 +1,19 @@
+{
+  "name": "mechascopic",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "astro": "^5.18.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

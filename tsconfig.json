@@ -1,0 +1,14 @@
+// TypeScript config for Astro
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@content/*": ["src/content/*"]
+    }
+  },
+  "include": ["src", "astro.config.mjs"],
+  "exclude": ["node_modules"]
+}
