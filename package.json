@@ -1,17 +1,18 @@
 {
   "name": "mechascopic",
+  "homepage": "https://wylie.github.io/mechascopic/",
   "type": "module",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check",
-    "format": "prettier --write ."
+    "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.18.0"
+    "astro": "^5.18.0",
+    "@astrojs/sitemap": "^3.4.0"
   },
   "devDependencies": {
     "prettier": "^3.0.0"

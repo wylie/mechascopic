@@ -1,13 +1,9 @@
 // Astro config file
 import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://wylie.github.io/mechascopic/", // Update if using a custom domain
-  outDir: "dist",
-  base: "/mechascopic/",
-  markdown: {
-    shikiConfig: {
-      theme: "github-dark",
-    },
-  },
+  integrations: [sitemap()],
+  base: "/mechascopic/"
 });
