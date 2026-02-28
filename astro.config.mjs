@@ -10,7 +10,4 @@ export default defineConfig({
       theme: "github-dark",
     },
   },
-  experimental: {
-    contentCollections: true,
-  },
 });
