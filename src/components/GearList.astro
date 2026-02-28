@@ -1,0 +1,13 @@
+---
+import { AFFILIATE_LINKS } from "../data/affiliateLinks";
+import AffiliateCard from "./AffiliateCard.astro";
+---
+
+<section>
+  <h2>My Setup</h2>
+  <div>
+    {AFFILIATE_LINKS.map(link => (
+      <AffiliateCard {...link} />
+    ))}
+  </div>
+</section>

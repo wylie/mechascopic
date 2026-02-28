@@ -1,12 +1,13 @@
 ---
-// Guides index page
-layout: ../../layouts/Base.astro
-title: "Guides | Mechascopic"
-description: "Browse PvE guides, builds, and strategies by game and topic."
+import Base from "../../layouts/Base.astro";
+import GuideFilters from "../../components/GuideFilters.astro";
+import GuidesList from "../../components/GuidesList.astro";
 ---
 
-<main>
-  <h1>Guides</h1>
-  <GuideFilters />
-  <GuidesList />
-</main>
+<Base title="Guides | Mechascopic" description="Browse PvE guides, builds, and strategies by game and topic.">
+  <main>
+    <h1>Guides</h1>
+    <GuideFilters />
+    <GuidesList />
+  </main>
+</Base>

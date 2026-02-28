@@ -1,12 +1,13 @@
 ---
-// Gear page
-layout: ../../layouts/Base.astro
-title: "Gear I Use | Mechascopic"
-description: "My setup and recommended alternatives for PvE gaming."
+import Base from "../layouts/Base.astro";
+import AffiliateDisclosure from "../components/AffiliateDisclosure.astro";
+import GearList from "../components/GearList.astro";
 ---
 
-<main>
-  <h1>My Setup & Recommended Gear</h1>
-  <AffiliateDisclosure />
-  <GearList />
-</main>
+<Base title="Gear I Use | Mechascopic" description="My setup and recommended alternatives for PvE gaming.">
+  <main>
+    <h1>My Setup & Recommended Gear</h1>
+    <AffiliateDisclosure />
+    <GearList />
+  </main>
+</Base>

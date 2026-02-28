@@ -1,34 +1,32 @@
 ---
-// Home page for Mechascopic
-layout: ../layouts/Base.astro
-title: "Mechascopic, PvE strategy, builds, and chill gameplay."
-description: "Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies."
+import Base from "../layouts/Base.astro";
 ---
 
-<main>
-  <section class="hero">
-    <h1>Mechascopic, PvE strategy, builds, and chill gameplay.</h1>
-    <p>Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.</p>
-    <div class="cta-row">
-      <a href="https://youtube.com/@mechascopic" class="btn">Subscribe on YouTube</a>
-      <a href="/guides" class="btn">Latest Guides</a>
-      <a href="/gear" class="btn">Gear I Use</a>
-    </div>
-  </section>
+<Base title="Mechascopic, PvE strategy, builds, and chill gameplay." description="Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.">
+  <main>
+    <section class="hero">
+      <h1>Mechascopic, PvE strategy, builds, and chill gameplay.</h1>
+      <p>Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.</p>
+      <div class="cta-row">
+        <a href="https://youtube.com/@mechascopic" class="btn">Subscribe on YouTube</a>
+        <a href="/guides" class="btn">Latest Guides</a>
+        <a href="/gear" class="btn">Gear I Use</a>
+      </div>
+    </section>
 
-  <section>
-    <h2>Latest Guides</h2>
-    <!-- Latest guides list will be rendered here -->
-    <LatestGuides />
-  </section>
+    <section>
+      <h2>Latest Guides</h2>
+      <!-- Latest guides list will be rendered here -->
+    </section>
 
-  <section>
-    <h2>Featured Video</h2>
-    <FeaturedVideo youtubeUrl="https://www.youtube.com/embed/dQw4w9WgXcQ" />
-  </section>
+    <section>
+      <h2>Featured Video</h2>
+      <!-- Featured video embed will be rendered here -->
+    </section>
 
-  <section>
-    <h2>Newsletter</h2>
-    <NewsletterSignup />
-  </section>
-</main>
+    <section>
+      <h2>Newsletter</h2>
+      <!-- Newsletter signup will be rendered here -->
+    </section>
+  </main>
+</Base>
