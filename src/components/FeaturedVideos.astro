@@ -1,0 +1,40 @@
+---
+const featuredVideos = [
+  {
+    title: "Calm PvE Build Breakdown",
+    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    watchUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  },
+  {
+    title: "Beginner Friendly PvE Guide",
+    embedUrl: "https://www.youtube.com/embed/3JZ_D3ELwOQ",
+    watchUrl: "https://www.youtube.com/watch?v=3JZ_D3ELwOQ",
+  },
+  {
+    title: "Loadout Tips for Chill Sessions",
+    embedUrl: "https://www.youtube.com/embed/l482T0yNkeo",
+    watchUrl: "https://www.youtube.com/watch?v=l482T0yNkeo",
+  },
+];
+---
+
+<section>
+  <h2>Featured Videos</h2>
+  <div class="video-grid">
+    {featuredVideos.map((video) => (
+      <article class="video-card">
+        <div class="video-frame">
+          <iframe
+            src={video.embedUrl}
+            title={video.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <h3>{video.title}</h3>
+        <a href={video.watchUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+      </article>
+    ))}
+  </div>
+</section>
