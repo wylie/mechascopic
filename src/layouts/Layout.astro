@@ -1,6 +1,7 @@
 ---
 // Layout: Base site layout for Mechascopic
 import { SITE } from "../config";
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -16,11 +17,11 @@ import { SITE } from "../config";
     <a href="#main" class="skip-link">Skip to content</a>
     <header>
       <nav>
-        <a href="/">Home</a>
-        <a href="/guides">Guides</a>
-        <a href="/gear">Gear</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
+        <a href={withBase("/")}>Home</a>
+        <a href={withBase("/guides")}>Guides</a>
+        <a href={withBase("/gear")}>Gear</a>
+        <a href={withBase("/about")}>About</a>
+        <a href={withBase("/contact")}>Contact</a>
       </nav>
     </header>
     <main id="main">

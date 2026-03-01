@@ -1,8 +1,9 @@
 ---
 // Placeholder for guides list (will render Markdown guides)
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 <ul>
-  <li><a href="/guides/hunter-build">Ultimate PvE Hunter Build</a></li>
-  <li><a href="/guides/budget-setup">Best Budget Gaming Setup 2026</a></li>
-  <li><a href="/guides/calm-pve">How to Stay Calm in PvE</a></li>
+  <li><a href={withBase("/guides/hunter-build")}>Ultimate PvE Hunter Build</a></li>
+  <li><a href={withBase("/guides/budget-setup")}>Best Budget Gaming Setup 2026</a></li>
+  <li><a href={withBase("/guides/calm-pve")}>How to Stay Calm in PvE</a></li>
 </ul>

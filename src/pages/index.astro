@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 
 <Layout title="Mechascopic, PvE strategy, builds, and chill gameplay." description="Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.">
@@ -10,8 +11,8 @@ import Button from "../components/Button.astro";
       <p>Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.</p>
       <div class="cta-row">
         <Button href="https://youtube.com/@mechascopic" text="Subscribe on YouTube" />
-        <Button href="/guides" text="Latest Guides" />
-        <Button href="/gear" text="Gear I Use" />
+        <Button href={withBase("/guides")} text="Latest Guides" />
+        <Button href={withBase("/gear")} text="Gear I Use" />
       </div>
     </section>
 
