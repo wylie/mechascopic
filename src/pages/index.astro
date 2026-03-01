@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
 ---
 
 <Layout title="Mechascopic, PvE strategy, builds, and chill gameplay." description="Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.">
@@ -8,9 +9,9 @@ import Layout from "../layouts/Layout.astro";
       <h1>Mechascopic, PvE strategy, builds, and chill gameplay.</h1>
       <p>Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.</p>
       <div class="cta-row">
-        <a href="https://youtube.com/@mechascopic" class="btn">Subscribe on YouTube</a>
-        <a href="/guides" class="btn">Latest Guides</a>
-        <a href="/gear" class="btn">Gear I Use</a>
+        <Button href="https://youtube.com/@mechascopic" text="Subscribe on YouTube" />
+        <Button href="/guides" text="Latest Guides" />
+        <Button href="/gear" text="Gear I Use" />
       </div>
     </section>
 

@@ -122,26 +122,6 @@ h3 {
   margin-top: 1.5rem;
 }
 
-.btn {
-  display: inline-block;
-  background: var(--color-accent);
-  color: #181a1b;
-  font-weight: 600;
-  padding: 0.65em 1.4em;
-  border: none;
-  border-radius: var(--radius);
-  text-decoration: none;
-  font-size: 1.08rem;
-  cursor: pointer;
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.07);
-  transition: background var(--transition), color var(--transition), box-shadow var(--transition);
-}
-.btn:hover, .btn:focus {
-  background: #38bdf8;
-  color: #181a1b;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.13);
-}
-
 .card {
   background: var(--color-bg-alt);
   border-radius: var(--radius);
