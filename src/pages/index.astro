@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 const base = import.meta.env.BASE_URL;
+const guidesHref = base + "guides";
+const gearHref = base + "gear";
 import FeaturedVideos from "../components/FeaturedVideos.astro";
 ---
 
@@ -12,8 +14,8 @@ import FeaturedVideos from "../components/FeaturedVideos.astro";
       <p>Guides, gear, and calm PvE content. Subscribe for the latest builds and strategies.</p>
       <div class="cta-row">
         <Button href="https://youtube.com/@mechascopic" text="Subscribe on YouTube" />
-        <Button href={`${base}guides`} text="Latest Guides" />
-        <Button href={`${base}gear`} text="Gear I Use" />
+        <Button href={guidesHref} text="Latest Guides" />
+        <Button href={gearHref} text="Gear I Use" />
       </div>
     </section>
 
