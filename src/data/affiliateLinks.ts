@@ -4,27 +4,27 @@
 */
 export const AFFILIATE_LINKS = [
   {
-    name: "Logitech G Pro X Superlight",
-    description: "Ultra-light wireless mouse, great for FPS and PvE.",
-    priceText: "$129",
+    name: "PlayStation 5 Console",
+    description: "Next-gen gaming console with stunning graphics and performance.",
+    priceText: "$499",
     retailer: "Amazon",
-    link: "https://amzn.to/xxxxxxx",
+    link: "https://amzn.to/3OVs5dX",
     note: "My daily driver for all games."
   },
   {
-    name: "Keychron K6 Wireless Keyboard",
-    description: "Compact, hot-swappable mechanical keyboard.",
+    name: "PlayStation DualSense Controller",
+    description: "Wireless controller with haptic feedback and adaptive triggers.",
     priceText: "$74",
     retailer: "Amazon",
-    link: "https://amzn.to/yyyyyyy",
-    note: "Great for both gaming and typing."
+    link: "https://amzn.to/4shneCc",
+    note: "Great for gaming."
   },
   {
-    name: "Sony WH-1000XM5 Headphones",
-    description: "Top-tier noise-cancelling headphones for focus.",
-    priceText: "$398",
+    name: "PlayStation Plus Elite Headset",
+    description: "Top-tier headphones for focus.",
+    priceText: "$146",
     retailer: "Amazon",
-    link: "https://amzn.to/zzzzzzz",
+    link: "https://amzn.to/3ORv9ru",
     note: "Blocks out distractions during long sessions."
   }
 ];
