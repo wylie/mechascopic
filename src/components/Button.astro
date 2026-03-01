@@ -2,10 +2,12 @@
 export interface Props {
   href: string;
   text: string;
+  target?: "_self" | "_blank";
 }
-const { href, text } = Astro.props;
+const { href, text, target = "_self" } = Astro.props;
+const rel = target === "_blank" ? "noopener noreferrer" : undefined;
 ---
-<a href={href} class="btn">{text}</a>
+<a href={href} class="btn" target={target} rel={rel}>{text}</a>
 
 <style>
   .btn {

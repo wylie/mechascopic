@@ -13,6 +13,11 @@ interface GetLatestVideosOptions {
   scanLimit?: number;
 }
 
+interface WatchPageMetadata {
+  lengthSeconds?: number;
+  isLiveContent: boolean;
+}
+
 const isLikelyShortFromHtml = (html: string): boolean => {
   const shortSignals = [
     "WEB_PAGE_TYPE_SHORTS",
@@ -23,6 +28,16 @@ const isLikelyShortFromHtml = (html: string): boolean => {
   ];
 
   return shortSignals.some((signal) => html.includes(signal));
+};
+
+const parseWatchPageMetadata = (html: string): WatchPageMetadata => {
+  const lengthMatch = html.match(/"lengthSeconds":"(\d+)"/);
+  const liveMatch = html.match(/"isLiveContent":(true|false)/);
+
+  return {
+    lengthSeconds: lengthMatch?.[1] ? Number(lengthMatch[1]) : undefined,
+    isLiveContent: liveMatch?.[1] === "true",
+  };
 };
 
 const isShortByShortsUrl = async (videoId: string): Promise<boolean> => {
@@ -191,7 +206,16 @@ export const getLatestYouTubeVideos = async (
           }
 
           const html = await shortCheckResponse.text();
-          return isLikelyShortFromHtml(html);
+          if (isLikelyShortFromHtml(html)) {
+            return true;
+          }
+
+          const metadata = parseWatchPageMetadata(html);
+          if (!metadata.isLiveContent && typeof metadata.lengthSeconds === "number" && metadata.lengthSeconds <= 61) {
+            return true;
+          }
+
+          return false;
         } catch {
           return false;
         }

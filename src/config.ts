@@ -5,7 +5,7 @@
 export const SITE = {
   name: "Mechascopic",
   url: "https://mechascopic.com", // Update to your deployed URL
-  description: "Mechascopic, PvE strategy, builds, and chill gameplay.",
+  description: "Mechascopic, chill gameplay and guides.",
   twitter: "mechascopic", // Twitter username (no @)
   youtube: "https://youtube.com/@mechascopic",
   youtubeHandle: "mechascopic", // Your @handle without @
