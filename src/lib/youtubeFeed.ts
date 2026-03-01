@@ -25,6 +25,25 @@ const isLikelyShortFromHtml = (html: string): boolean => {
   return shortSignals.some((signal) => html.includes(signal));
 };
 
+const isShortByShortsUrl = async (videoId: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`https://www.youtube.com/shorts/${videoId}`, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+      },
+    });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    return (response.url || "").includes("/shorts/");
+  } catch {
+    return false;
+  }
+};
+
 const decodeXmlEntities = (value: string) =>
   value
     .replace(/&amp;/g, "&")
@@ -150,6 +169,11 @@ export const getLatestYouTubeVideos = async (
     const shortsFlags = await Promise.all(
       parsed.map(async (video) => {
         try {
+          const isShortFromShortsRoute = await isShortByShortsUrl(video.videoId);
+          if (isShortFromShortsRoute) {
+            return true;
+          }
+
           const shortCheckResponse = await fetch(video.watchUrl, {
             headers: {
               "User-Agent":

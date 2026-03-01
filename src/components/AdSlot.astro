@@ -11,10 +11,13 @@ const hasPublisherId =
   typeof SITE.adsense.publisherId === "string"
   && SITE.adsense.publisherId.startsWith("ca-pub-")
   && !SITE.adsense.publisherId.includes("XXXXXXXX");
-const canRenderAdsense = Boolean(SITE.adsense.enabled && hasPublisherId);
+const isDev = import.meta.env.DEV;
+const canRenderAdsense = Boolean(!isDev && SITE.adsense.enabled && hasPublisherId);
+const showPlaceholder = isDev;
+const shouldRender = showPlaceholder || canRenderAdsense;
 ---
 
-<div class="ad-slot" style={`min-height:${minHeight}`} aria-label={label}>
+<div class="ad-slot" style={`min-height:${minHeight};display:${shouldRender ? "grid" : "none"}`} aria-label={label}>
   {canRenderAdsense ? (
     <div class="ad-inner">AdSense enabled, ad unit placeholder ({label})</div>
   ) : (
