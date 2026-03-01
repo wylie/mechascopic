@@ -8,6 +8,8 @@ export const SITE = {
   description: "Mechascopic, PvE strategy, builds, and chill gameplay.",
   twitter: "mechascopic", // Twitter username (no @)
   youtube: "https://youtube.com/@mechascopic",
+  youtubeHandle: "mechascopic", // Your @handle without @
+  youtubeChannelId: "UCijxxlP9VQfs7LpsjVRAnjA", // Your channel ID
   twitch: "https://twitch.tv/mechascopic", // Optional
   discord: "", // Optional
   email: "contact@mechascopic.com", // Update as needed
