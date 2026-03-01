@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wylie.github.io/mechascopic/sitemap-index.xml
