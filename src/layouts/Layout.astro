@@ -44,6 +44,11 @@ const shouldLoadGa = import.meta.env.PROD && !!gaMeasurementId;
     </main>
     <footer>
       <p>&copy; {new Date().getFullYear()} Mechascopic. All rights reserved.</p>
+      <p class="footer-links">
+        <a href={`${base}privacy`}>Privacy</a>
+        <span aria-hidden="true"> · </span>
+        <a href={`${base}disclosure`}>Disclosure</a>
+      </p>
     </footer>
   </body>
 </html>
@@ -81,6 +86,9 @@ const shouldLoadGa = import.meta.env.PROD && !!gaMeasurementId;
     margin: 0;
     background: var(--color-bg);
     color: var(--color-fg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   a {
     color: var(--color-link);
@@ -122,7 +130,15 @@ const shouldLoadGa = import.meta.env.PROD && !!gaMeasurementId;
     padding: 1.5rem 0 1rem 0;
     font-size: 0.95rem;
   }
+  .footer-links {
+    margin: 0.5rem 0 0;
+  }
+  .footer-links a {
+    text-decoration: underline;
+  }
   main {
+    flex: 1;
+    width: 100%;
     max-width: 720px;
     margin: 2.5rem auto 0 auto;
     padding: 2rem 1.25rem 3rem 1.25rem;
