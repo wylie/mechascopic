@@ -9,7 +9,6 @@ import { SITE } from "../config";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{Astro.props.title ? Astro.props.title + ' | ' + SITE.name : SITE.name}</title>
     <meta name="description" content={Astro.props.description || SITE.description} />
-    <link rel="stylesheet" href={`${import.meta.env.BASE_URL}styles.css`} />
     <link rel="canonical" href={SITE.url + Astro.url.pathname} />
     <slot name="head" />
   </head>
@@ -130,14 +129,6 @@ import { SITE } from "../config";
   }
   h3 {
     font-size: 1.1rem;
-  }
-  .card {
-    background: var(--color-bg-alt);
-    border-radius: var(--radius);
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.07);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid var(--color-border);
   }
   button, input, select, textarea {
     font-family: inherit;
