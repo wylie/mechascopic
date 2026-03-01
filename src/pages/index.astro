@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import FeaturedVideos from "../components/FeaturedVideos.astro";
+import AdSlot from "../components/AdSlot.astro";
 const base = import.meta.env.BASE_URL;
 const guidesHref = base + "guides";
 const gearHref = base + "gear";
@@ -19,12 +20,16 @@ const gearHref = base + "gear";
       </div>
     </section>
 
+    <AdSlot label="Home, below hero" minHeight="110px" />
+
     <section>
       <h2>Latest Guides</h2>
       <!-- Latest guides list will be rendered here -->
     </section>
 
     <FeaturedVideos />
+
+    <AdSlot label="Home, below videos" minHeight="140px" />
 
     <section>
       <h2>Newsletter</h2>

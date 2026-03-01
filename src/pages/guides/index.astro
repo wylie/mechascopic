@@ -2,12 +2,15 @@
 import Layout from "../../layouts/Layout.astro";
 import GuideFilters from "../../components/GuideFilters.astro";
 import GuidesList from "../../components/GuidesList.astro";
+import AdSlot from "../../components/AdSlot.astro";
 ---
 
 <Layout title="Guides | Mechascopic" description="Browse PvE guides, builds, and strategies by game and topic.">
   <main>
     <h1>Guides</h1>
+    <AdSlot label="Guides, below title" minHeight="110px" />
     <GuideFilters />
     <GuidesList />
+    <AdSlot label="Guides, below list" minHeight="140px" />
   </main>
 </Layout>

@@ -1,0 +1,43 @@
+---
+import { SITE } from "../config";
+
+export interface Props {
+  label?: string;
+  minHeight?: string;
+}
+
+const { label = "Ad Space", minHeight = "140px" } = Astro.props;
+const hasPublisherId =
+  typeof SITE.adsense.publisherId === "string"
+  && SITE.adsense.publisherId.startsWith("ca-pub-")
+  && !SITE.adsense.publisherId.includes("XXXXXXXX");
+const canRenderAdsense = Boolean(SITE.adsense.enabled && hasPublisherId);
+---
+
+<div class="ad-slot" style={`min-height:${minHeight}`} aria-label={label}>
+  {canRenderAdsense ? (
+    <div class="ad-inner">AdSense enabled, ad unit placeholder ({label})</div>
+  ) : (
+    <div class="ad-inner">Ad placeholder, {label}</div>
+  )}
+</div>
+
+<style>
+  .ad-slot {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    margin: 1.5rem 0;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-bg-alt) 92%, #000 8%);
+  }
+
+  .ad-inner {
+    font-size: 0.92rem;
+    color: var(--color-fg);
+    opacity: 0.85;
+    text-align: center;
+    padding: 0.75rem;
+  }
+</style>
