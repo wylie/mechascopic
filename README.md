@@ -10,5 +10,6 @@ To update the GA property, edit:
 
 Notes:
 
-- GA loads only in production (`import.meta.env.PROD`).
+- GA loads whenever `gaMeasurementId` is set.
+- Tracking is skipped automatically on `localhost` and `127.0.0.1`.
 - If `gaMeasurementId` is empty, the GA script will not load.
