@@ -82,6 +82,9 @@ const shouldLoadGa = import.meta.env.PROD && !!gaMeasurementId;
     -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
   }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
   body {
     margin: 0;
     background: var(--color-bg);
@@ -106,6 +109,7 @@ const shouldLoadGa = import.meta.env.PROD && !!gaMeasurementId;
   header nav {
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     font-size: 1.1rem;
@@ -209,5 +213,22 @@ const shouldLoadGa = import.meta.env.PROD && !!gaMeasurementId;
   :focus {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+
+  @media (max-width: 480px) {
+    header nav {
+      gap: 0.5rem 0.75rem;
+      font-size: 1rem;
+      padding: 0.4rem 0.6rem;
+    }
+
+    header nav a {
+      padding: 0.2em 0.4em;
+    }
+
+    main {
+      margin-top: 1.25rem;
+      padding: 1.25rem 0.9rem 2rem;
+    }
   }
 </style>
