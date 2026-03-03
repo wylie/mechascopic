@@ -1,0 +1,73 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const guides = await getCollection("guides");
+
+  return guides.map((guide) => ({
+    params: { slug: guide.slug },
+    props: { guide },
+  }));
+}
+
+interface Props {
+  guide: CollectionEntry<"guides">;
+}
+
+const { guide } = Astro.props;
+const { Content } = await guide.render();
+
+const publishedDate = new Date(guide.data.pubDate).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+
+const updatedDate = guide.data.updatedDate
+  ? new Date(guide.data.updatedDate).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  : null;
+---
+
+<Layout title={`${guide.data.title} | Guides`} description={guide.data.description}>
+  <main>
+    <article>
+      <header class="guide-header">
+        <h1>{guide.data.title}</h1>
+        <p>{guide.data.description}</p>
+        <p class="guide-meta">
+          <span>Published {publishedDate}</span>
+          {updatedDate && <span> · Updated {updatedDate}</span>}
+          {guide.data.game && <span> · {guide.data.game}</span>}
+        </p>
+      </header>
+
+      <Content />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .guide-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .guide-meta {
+    color: color-mix(in srgb, var(--color-fg) 72%, transparent);
+    font-size: 0.95rem;
+  }
+
+  article :global(a),
+  article :global(a:visited) {
+    color: var(--color-accent);
+  }
+
+  article :global(a:hover),
+  article :global(a:focus) {
+    color: var(--color-link-hover);
+  }
+</style>

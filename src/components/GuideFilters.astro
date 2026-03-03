@@ -1,20 +1,31 @@
 ---
-// Placeholder for guide filters (client-side filtering)
+export interface Props {
+  gameOptions: string[];
+  topicOptions: string[];
+}
+
+const { gameOptions = [], topicOptions = [] } = Astro.props;
+
+const toLabel = (value: string) =>
+  value
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 ---
 <div class="guide-filters">
-  <!-- Simple filter UI goes here -->
   <label for="game">Game:</label>
   <select id="game" name="game">
     <option value="">All</option>
-    <option value="Destiny 2">Destiny 2</option>
-    <option value="General">General</option>
+    {gameOptions.map((game) => (
+      <option value={game}>{game}</option>
+    ))}
   </select>
   <label for="topic" class="topic-label">Topic:</label>
   <select id="topic" name="topic">
     <option value="">All</option>
-    <option value="builds">Builds</option>
-    <option value="gear">Gear</option>
-    <option value="mindset">Mindset</option>
+    {topicOptions.map((topic) => (
+      <option value={topic}>{toLabel(topic)}</option>
+    ))}
   </select>
 </div>
 

@@ -1,15 +1,83 @@
 ---
-// Placeholder for guides list (will render Markdown guides)
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export interface Props {
+  guides?: CollectionEntry<"guides">[];
+  enableFiltering?: boolean;
+}
+
+const { guides: incomingGuides, enableFiltering = false } = Astro.props;
+
+const guides = (incomingGuides ?? (await getCollection("guides"))).sort(
+  (first, second) => new Date(second.data.pubDate).getTime() - new Date(first.data.pubDate).getTime()
+);
+
 const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
-<ul>
-  <li><a href={withBase("/guides/hunter-build")}>Ultimate PvE Hunter Build</a></li>
-  <li><a href={withBase("/guides/budget-setup")}>Best Budget Gaming Setup 2026</a></li>
-  <li><a href={withBase("/guides/calm-pve")}>How to Stay Calm in PvE</a></li>
+<ul id={enableFiltering ? "guides-list" : undefined}>
+  {guides.map((guide) => (
+    <li
+      data-guide-item
+      data-game={guide.data.game ?? ""}
+      data-tags={(guide.data.tags ?? []).join(",")}
+    >
+      <a href={withBase(`/guides/${guide.slug}`)}>{guide.data.title}</a>
+    </li>
+  ))}
 </ul>
 
+{enableFiltering && (
+  <p id="guides-empty" hidden>No guides match that game/topic combination yet.</p>
+)}
+
+{enableFiltering && (
+  <script is:inline>
+    const gameSelect = document.getElementById("game");
+    const topicSelect = document.getElementById("topic");
+    const items = Array.from(document.querySelectorAll("[data-guide-item]"));
+    const emptyState = document.getElementById("guides-empty");
+
+    const normalize = (value) => String(value ?? "").trim().toLowerCase();
+
+    const applyFilters = () => {
+      const selectedGame = normalize(gameSelect?.value);
+      const selectedTopic = normalize(topicSelect?.value);
+      let visibleCount = 0;
+
+      for (const item of items) {
+        const game = normalize(item.getAttribute("data-game"));
+        const tags = normalize(item.getAttribute("data-tags"))
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean);
+
+        const gameMatch = !selectedGame || game === selectedGame;
+        const topicMatch = !selectedTopic || tags.includes(selectedTopic);
+        const shouldShow = gameMatch && topicMatch;
+
+        item.hidden = !shouldShow;
+        if (shouldShow) visibleCount += 1;
+      }
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    };
+
+    gameSelect?.addEventListener("change", applyFilters);
+    topicSelect?.addEventListener("change", applyFilters);
+    applyFilters();
+  </script>
+)}
+
 <style>
-  a {
+  a,
+  a:visited {
     color: var(--color-accent);
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--color-link-hover);
   }
 </style>

@@ -2,10 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import FeaturedVideos from "../components/FeaturedVideos.astro";
+import GuidesList from "../components/GuidesList.astro";
 import AdSlot from "../components/AdSlot.astro";
 const base = import.meta.env.BASE_URL;
 const guidesHref = base + "guides";
 const gearHref = base + "gear";
+const newsletterSubscribeHref = "https://mechascopic.beehiiv.com";
 ---
 
 <Layout title="Mechascopic, chill gameplay and guides." description="Guides, gear, and chill gameplay content. Subscribe for the latest videos and live streams.">
@@ -26,7 +28,7 @@ const gearHref = base + "gear";
     <section>
       <h2>Latest Guides</h2>
       <p>Browse recent strategy posts for Destiny 2 and other PvE-focused games, including beginner-friendly tips, class builds, and efficient loadout ideas.</p>
-      <!-- Latest guides list will be rendered here -->
+      <GuidesList />
     </section>
 
     <FeaturedVideos />
@@ -36,7 +38,23 @@ const gearHref = base + "gear";
     <section>
       <h2>Newsletter</h2>
       <p>Get updates when new gameplay guides, video breakdowns, and gear recommendations are published.</p>
-      <!-- Newsletter signup will be rendered here -->
+      <div class="newsletter-card">
+        <h3>Subscribe to Mechascopic's Dispatch</h3>
+        <p>
+          Mechascopic's Dispatch is now live on Beehiiv with practical gameplay notes, guide highlights,
+          and creator updates delivered every two weeks.
+        </p>
+        <p>
+          <a class="newsletter-link" href={newsletterSubscribeHref} target="_blank" rel="noopener noreferrer">
+            Join on Beehiiv
+          </a>
+        </p>
+        <div class="cta-row">
+          <Button href={newsletterSubscribeHref} text="Subscribe to Dispatch" target="_blank" />
+          <Button href="https://youtube.com/@mechascopic" text="Follow on YouTube" target="_blank" />
+          <Button href={guidesHref} text="Browse Guides" />
+        </div>
+      </div>
     </section>
   </main>
 </Layout>
@@ -52,5 +70,26 @@ const gearHref = base + "gear";
     gap: 1rem;
     justify-content: center;
     margin-top: 1.5rem;
+  }
+
+  .newsletter-card {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-alt);
+  }
+
+  .newsletter-card h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter-link {
+    color: var(--color-accent);
+  }
+
+  .newsletter-card .cta-row {
+    margin-top: 1rem;
+    justify-content: flex-start;
   }
 </style>

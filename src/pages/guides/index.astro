@@ -3,6 +3,17 @@ import Layout from "../../layouts/Layout.astro";
 import GuideFilters from "../../components/GuideFilters.astro";
 import GuidesList from "../../components/GuidesList.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import { getCollection } from "astro:content";
+
+const guides = await getCollection("guides");
+
+const gameOptions = Array.from(
+  new Set(guides.map((guide) => guide.data.game).filter((game): game is string => !!game && game.length > 0))
+).sort((first, second) => first.localeCompare(second));
+
+const topicOptions = Array.from(
+  new Set(guides.flatMap((guide) => guide.data.tags ?? []).filter((tag) => tag && tag !== "arc-raiders"))
+).sort((first, second) => first.localeCompare(second));
 ---
 
 <Layout title="Guides | Mechascopic" description="Browse PvE guides, builds, and strategies by game and topic.">
@@ -10,8 +21,8 @@ import AdSlot from "../../components/AdSlot.astro";
     <h1>Guides</h1>
     <p>Find step-by-step PvE gaming guides, class builds, and strategy breakdowns designed for clear execution, calm gameplay, and steady progress.</p>
     <AdSlot label="Guides, below title" minHeight="110px" />
-    <GuideFilters />
-    <GuidesList />
+    <GuideFilters gameOptions={gameOptions} topicOptions={topicOptions} />
+    <GuidesList guides={guides} enableFiltering={true} />
     <AdSlot label="Guides, below list" minHeight="140px" />
   </main>
 </Layout>
