@@ -6,7 +6,7 @@ export const SITE = {
   name: "Mechascopic",
   url: "https://mechascopic.com", // Update to your deployed URL
   description: "Mechascopic, chill gameplay and guides.",
-  gaMeasurementId: "G-0MWNYK8PTT", // Google Analytics (GA4) measurement ID
+  gaMeasurementId: import.meta.env.PUBLIC_GA_MEASUREMENT_ID || "", // Google Analytics (GA4) measurement ID
   twitter: "mechascopic", // Twitter username (no @)
   youtube: "https://youtube.com/@mechascopic",
   youtubeHandle: "mechascopic", // Your @handle without @

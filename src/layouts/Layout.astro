@@ -16,19 +16,22 @@ const shouldLoadGa = !!gaMeasurementId;
     {shouldLoadGa && (
       <>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
-        <script is:inline>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            const host = window.location.hostname;
-            const isLocalHost = host === 'localhost' || host === '127.0.0.1';
-            if (!isLocalHost) {
-              gtag('config', '${gaMeasurementId}', { page_path: window.location.pathname });
-            }
-          `}
+        <script is:inline define:vars={{ gaMeasurementId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          const host = window.location.hostname;
+          const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+          if (!isLocalHost) {
+            gtag('config', gaMeasurementId, { page_path: window.location.pathname });
+          }
         </script>
       </>
+    )}
+    {import.meta.env.DEV && !shouldLoadGa && (
+      <script is:inline>
+        console.warn("[GA] PUBLIC_GA_MEASUREMENT_ID is missing. GA4 tracking is disabled.");
+      </script>
     )}
     <slot name="head" />
   </head>
