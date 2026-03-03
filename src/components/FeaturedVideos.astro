@@ -147,8 +147,13 @@ const base = import.meta.env.BASE_URL;
     overflow: hidden;
   }
   :global(.latest-videos .video-card a) {
-    color: white;
+    color: var(--color-accent);
     margin-top: auto;
+  }
+
+  :global(.latest-videos .video-card a:hover),
+  :global(.latest-videos .video-card a:focus) {
+    color: var(--color-link-hover);
   }
 
   @media (max-width: 900px) {
