@@ -72,6 +72,7 @@ const shouldLoadGa = !!gaMeasurementId;
     --color-bg-alt: #232527;
     --color-fg: #f3f4f6;
     --color-accent: #4fd1c5;
+    --color-on-accent: #181a1b;
     --color-link: #7dd3fc;
     --color-link-hover: #38bdf8;
     --color-border: #2d2f31;
@@ -132,7 +133,7 @@ const shouldLoadGa = !!gaMeasurementId;
   }
   header nav a:hover, header nav a:focus {
     background: var(--color-accent);
-    color: #181a1b;
+    color: var(--color-on-accent);
   }
   footer {
     background: var(--color-bg-alt);
@@ -190,7 +191,7 @@ const shouldLoadGa = !!gaMeasurementId;
     overflow: hidden;
     z-index: 100;
     background: var(--color-accent);
-    color: #181a1b;
+    color: var(--color-on-accent);
     padding: 0.5em 1em;
     border-radius: var(--radius);
     transition: left var(--transition);
@@ -207,6 +208,8 @@ const shouldLoadGa = !!gaMeasurementId;
       --color-bg: #f3f4f6;
       --color-bg-alt: #e5e7eb;
       --color-fg: #181a1b;
+      --color-accent: #0f766e;
+      --color-on-accent: #ffffff;
       --color-link: #2563eb;
       --color-link-hover: #1d4ed8;
       --color-border: #d1d5db;
