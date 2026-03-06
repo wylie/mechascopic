@@ -7,7 +7,6 @@ import AdSlot from "../components/AdSlot.astro";
 const base = import.meta.env.BASE_URL;
 const guidesHref = base + "guides";
 const gearHref = base + "gear";
-const newsletterSubscribeHref = "https://mechascopic.beehiiv.com";
 ---
 
 <Layout title="Mechascopic, chill gameplay and guides." description="Guides, gear, and chill gameplay content. Subscribe for the latest videos and live streams.">
@@ -37,26 +36,89 @@ const newsletterSubscribeHref = "https://mechascopic.beehiiv.com";
 
     <section>
       <h2>Newsletter</h2>
-      <p>Get updates when new gameplay guides, video breakdowns, and gear recommendations are published.</p>
+      <p>Get gameplay notes, guide highlights, and creator updates delivered every two weeks.</p>
       <div class="newsletter-card">
         <h3>Subscribe to Mechascopic's Dispatch</h3>
-        <p>
-          Mechascopic's Dispatch is now live on Beehiiv with practical gameplay notes, guide highlights,
-          and creator updates delivered every two weeks.
-        </p>
-        <p>
-          <a class="newsletter-link" href={newsletterSubscribeHref} target="_blank" rel="noopener noreferrer">
-            Join on Beehiiv
-          </a>
-        </p>
-        <div class="cta-row">
-          <Button href={newsletterSubscribeHref} text="Subscribe to Dispatch" target="_blank" />
-          <Button href="https://youtube.com/@mechascopic" text="Follow on YouTube" target="_blank" />
-          <Button href={guidesHref} text="Browse Guides" />
-        </div>
+        <form class="newsletter-form" id="newsletter-form" action="/api/newsletter/subscribe" method="post">
+          <label for="newsletter-first-name">First name</label>
+          <input
+            class="newsletter-input"
+            id="newsletter-first-name"
+            name="firstName"
+            type="text"
+            placeholder="Your first name"
+            autocomplete="given-name"
+            maxlength="80"
+            required
+          />
+
+          <label for="newsletter-email">Email address</label>
+          <div class="newsletter-input-row">
+            <input
+              class="newsletter-input"
+              id="newsletter-email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <button type="submit">Subscribe</button>
+          </div>
+          <p id="newsletter-feedback" class="newsletter-feedback" aria-live="polite"></p>
+        </form>
       </div>
     </section>
   </main>
+
+  <script is:inline>
+    const form = document.getElementById("newsletter-form");
+    const feedback = document.getElementById("newsletter-feedback");
+
+    if (form instanceof HTMLFormElement && feedback instanceof HTMLElement) {
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const emailInput = form.elements.namedItem("email");
+        const firstNameInput = form.elements.namedItem("firstName");
+        if (!(emailInput instanceof HTMLInputElement)) {
+          return;
+        }
+
+        const firstName = firstNameInput instanceof HTMLInputElement ? firstNameInput.value : "";
+
+        feedback.textContent = "Subscribing...";
+        feedback.dataset.state = "pending";
+
+        try {
+          const response = await fetch(form.action, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: emailInput.value,
+              firstName,
+            }),
+          });
+
+          const payload = await response.json().catch(() => null);
+          if (!response.ok || !payload?.ok) {
+            feedback.textContent = payload?.error || "Could not subscribe right now. Please try again.";
+            feedback.dataset.state = "error";
+            return;
+          }
+
+          feedback.textContent = "You are subscribed. Check your inbox for confirmation.";
+          feedback.dataset.state = "success";
+          form.reset();
+        } catch {
+          feedback.textContent = "Could not subscribe right now. Please try again.";
+          feedback.dataset.state = "error";
+        }
+      });
+    }
+  </script>
 </Layout>
 
 <style>
@@ -84,12 +146,102 @@ const newsletterSubscribeHref = "https://mechascopic.beehiiv.com";
     margin-bottom: 0.5rem;
   }
 
-  .newsletter-link {
-    color: var(--color-accent);
+  .newsletter-form {
+    margin-top: 1rem;
+    --newsletter-control-height: 3rem;
   }
 
-  .newsletter-card .cta-row {
-    margin-top: 1rem;
-    justify-content: flex-start;
+  .newsletter-form label {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 0.95rem;
   }
+
+  .newsletter-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--newsletter-control-height);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    padding: 0 0.85rem;
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  .newsletter-input::placeholder {
+    font-size: 1rem;
+    color: color-mix(in srgb, var(--color-fg) 58%, transparent);
+  }
+
+  .newsletter-form > .newsletter-input {
+    margin-bottom: 0.85rem;
+  }
+
+  .newsletter-input-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .newsletter-input-row .newsletter-input {
+    box-sizing: border-box;
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+
+  .newsletter-input-row button {
+    height: var(--newsletter-control-height);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: var(--color-accent);
+    color: #181a1b;
+    font-weight: 600;
+    font-size: 1.08rem;
+    line-height: 1.2;
+    padding: 0 1.4em;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+  }
+
+  .newsletter-input-row button:hover,
+  .newsletter-input-row button:focus {
+    background: #38bdf8;
+    color: #181a1b;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.13);
+  }
+
+  @media (prefers-color-scheme: light) {
+    .newsletter-input-row button {
+      color: #fff;
+      background: #2563eb;
+    }
+
+    .newsletter-input-row button:hover,
+    .newsletter-input-row button:focus {
+      background: #1d4ed8;
+      color: #fff;
+    }
+  }
+
+  .newsletter-feedback {
+    min-height: 1.25rem;
+    margin-top: 0.65rem;
+    font-size: 0.95rem;
+  }
+
+  .newsletter-feedback[data-state="success"] {
+    color: #6ee7b7;
+  }
+
+  .newsletter-feedback[data-state="error"] {
+    color: #fca5a5;
+  }
+
 </style>

@@ -12,29 +12,106 @@ const toLabel = (value: string) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
 ---
-<div class="guide-filters">
-  <label for="game">Game:</label>
-  <select id="game" name="game">
-    <option value="">All</option>
-    {gameOptions.map((game) => (
-      <option value={game}>{game}</option>
-    ))}
-  </select>
-  <label for="topic" class="topic-label">Topic:</label>
-  <select id="topic" name="topic">
-    <option value="">All</option>
-    {topicOptions.map((topic) => (
-      <option value={topic}>{toLabel(topic)}</option>
-    ))}
-  </select>
+<div class="guide-filters" aria-label="Guide filters">
+  <div class="filter-field">
+    <label for="game">Game</label>
+    <select id="game" name="game" class="filter-select">
+      <option value="">All games</option>
+      {gameOptions.map((game) => (
+        <option value={game}>{game}</option>
+      ))}
+    </select>
+  </div>
+
+  <div class="filter-field">
+    <label for="topic">Topic</label>
+    <select id="topic" name="topic" class="filter-select">
+      <option value="">All topics</option>
+      {topicOptions.map((topic) => (
+        <option value={topic}>{toLabel(topic)}</option>
+      ))}
+    </select>
+  </div>
 </div>
 
 <style>
   .guide-filters {
-    margin-bottom: 1.5em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    align-items: end;
   }
 
-  .topic-label {
-    margin-left: 1em;
+  .filter-field {
+    min-width: 180px;
+    flex: 1 1 220px;
+  }
+
+  .filter-field label {
+    display: block;
+    margin-bottom: 0.42rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--color-fg) 90%, transparent);
+    letter-spacing: 0.01em;
+  }
+
+  .filter-select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 20%, var(--color-border));
+    border-radius: var(--radius);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    min-height: var(--control-height);
+    padding: 0.62rem 2.35rem 0.62rem 0.78rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.25;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--color-accent) 50%),
+      linear-gradient(135deg, var(--color-accent) 50%, transparent 50%),
+      linear-gradient(to right, color-mix(in srgb, var(--color-accent) 16%, transparent), color-mix(in srgb, var(--color-accent) 16%, transparent));
+    background-position:
+      calc(100% - 0.98rem) 50%,
+      calc(100% - 0.68rem) 50%,
+      calc(100% - 2.1rem) 0;
+    background-size: 0.4rem 0.4rem, 0.4rem 0.4rem, 1px 100%;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-fg) 8%, transparent);
+  }
+
+  .filter-select:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+    background-color: color-mix(in srgb, var(--color-bg) 90%, var(--color-accent));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-fg) 10%, transparent);
+  }
+
+  .filter-select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    outline: none;
+  }
+
+  .filter-select option {
+    background: var(--color-bg-alt);
+    color: var(--color-fg);
+  }
+
+  @media (max-width: 480px) {
+    .guide-filters {
+      gap: 0.7rem;
+    }
+
+    .filter-field {
+      min-width: 100%;
+      flex-basis: 100%;
+    }
   }
 </style>

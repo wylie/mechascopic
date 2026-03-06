@@ -24,10 +24,24 @@ const { name, description, priceText, retailer, link, note } = Astro.props;
   .affiliate-card {
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: 1em;
+    padding: 0.9rem;
     margin-bottom: 1em;
     background: var(--color-bg-alt);
   }
+
+  .affiliate-card h3 {
+    margin: 0 0 0.45rem;
+    color: var(--color-fg);
+  }
+
+  .affiliate-card p {
+    margin: 0 0 0.8rem;
+  }
+
+  .affiliate-card p:last-child {
+    margin-bottom: 0;
+  }
+
   .affiliate-card a {
     color: var(--color-accent);
     font-weight: 500;

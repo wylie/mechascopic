@@ -1,0 +1,124 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { readdir } from "node:fs/promises";
+import { SITE } from "../../config";
+import { getBeehiivPostsFromRss } from "../../lib/beehiivFeed";
+
+async function getPublishedIssues() {
+  const contentDir = new URL("../../content/newsletter", import.meta.url);
+
+  try {
+    const entries = await readdir(contentDir, { withFileTypes: true });
+    const hasMarkdownFiles = entries.some((entry) => entry.isFile() && /\.(md|mdx)$/i.test(entry.name));
+
+    if (!hasMarkdownFiles) {
+      return [];
+    }
+
+    return await getCollection("newsletter", ({ data }) => !data.draft);
+  } catch {
+    return [];
+  }
+}
+
+const issues = (await getPublishedIssues()).sort(
+  (first, second) => second.data.pubDate.getTime() - first.data.pubDate.getTime()
+);
+const beehiivPosts = issues.length === 0 ? await getBeehiivPostsFromRss(SITE.newsletter.beehiivRssUrl, 24) : [];
+
+const newsletterName = "Mechascopic's Dispatch";
+---
+
+<Layout
+  title={`${newsletterName} Archive`}
+  description={`Read past issues of ${newsletterName} published on Mechascopic.`}
+>
+  <main>
+    <h1>{newsletterName} Archive</h1>
+    <p>Browse every published issue. Click a title to open the full post on this site.</p>
+
+    {issues.length === 0 && beehiivPosts.length === 0 ? (
+      <p>No issues are published yet.</p>
+    ) : issues.length > 0 ? (
+      <ul class="issue-list">
+        {issues.map((issue) => (
+          <li>
+            <article>
+              <h2>
+                <a href={`/newsletter/${issue.slug}`}>{issue.data.title}</a>
+              </h2>
+              <p class="meta">
+                Issue #{issue.data.issueNumber} · {issue.data.pubDate.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+              <p>{issue.data.description}</p>
+            </article>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <ul class="issue-list">
+        {beehiivPosts.map((post) => (
+          <li>
+            <article>
+              <h2>
+                <a href={`/newsletter/${post.issueNumber}`}>{post.title}</a>
+              </h2>
+              <p class="meta">
+                Mechascopic's Dispatch #{post.issueNumber} · {" "}
+                {post.pubDate.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+              {post.excerpt && <p>{post.excerpt}</p>}
+            </article>
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
+</Layout>
+
+<style>
+  .issue-list {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .issue-list li {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    background: var(--color-bg-alt);
+  }
+
+  .issue-list h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.2rem;
+  }
+
+  .meta {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+  
+  article a,
+  article a:visited {
+    color: var(--color-accent);
+  }
+
+  article a:hover,
+  article a:focus {
+    color: var(--color-link-hover);
+  }
+</style>

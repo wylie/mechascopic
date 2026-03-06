@@ -4,6 +4,34 @@ import { SITE } from "../config";
 const base = import.meta.env.BASE_URL;
 const gaMeasurementId = SITE.gaMeasurementId;
 const shouldLoadGa = !!gaMeasurementId;
+
+const normalizePath = (value: string): string => {
+  const trimmed = value.replace(/\/+$/, "");
+  return trimmed.length > 0 ? trimmed : "/";
+};
+
+const currentPath = normalizePath(Astro.url.pathname);
+
+const navLinks = [
+  { href: base, label: "Home", exact: true },
+  { href: `${base}guides`, label: "Guides" },
+  { href: `${base}newsletter`, label: "Newsletter" },
+  { href: `${base}gear`, label: "Gear" },
+  { href: `${base}about`, label: "About" },
+  { href: `${base}contact`, label: "Contact" },
+];
+
+const isNavLinkActive = (href: string, exact = false): boolean => {
+  const normalizedHref = normalizePath(href);
+  if (exact) {
+    return currentPath === normalizedHref;
+  }
+
+  return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+};
+
+const activeNavLinkStyle =
+  "color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.22em; text-decoration-thickness: 2px;";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -39,11 +67,15 @@ const shouldLoadGa = !!gaMeasurementId;
     <a href="#main" class="skip-link">Skip to content</a>
     <header>
       <nav>
-        <a href={base}>Home</a>
-        <a href={`${base}guides`}>Guides</a>
-        <a href={`${base}gear`}>Gear</a>
-        <a href={`${base}about`}>About</a>
-        <a href={`${base}contact`}>Contact</a>
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isNavLinkActive(link.href, link.exact) ? "page" : undefined}
+            style={isNavLinkActive(link.href, link.exact) ? activeNavLinkStyle : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
       </nav>
     </header>
     <main id="main">
@@ -79,6 +111,7 @@ const shouldLoadGa = !!gaMeasurementId;
     --font-main: 'Inter', system-ui, sans-serif;
     --font-mono: 'Fira Mono', monospace;
     --radius: 8px;
+    --control-height: 2.7rem;
     --transition: 0.15s cubic-bezier(.4,0,.2,1);
   }
   html {

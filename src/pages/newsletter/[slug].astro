@@ -1,0 +1,146 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { readdir } from "node:fs/promises";
+import { SITE } from "../../config";
+import { getBeehiivPostsFromRss, type BeehiivPostItem } from "../../lib/beehiivFeed";
+
+export async function getStaticPaths() {
+  const contentDir = new URL("../../content/newsletter", import.meta.url);
+  let issues: CollectionEntry<"newsletter">[] = [];
+
+  try {
+    const entries = await readdir(contentDir, { withFileTypes: true });
+    const hasMarkdownFiles = entries.some((entry) => entry.isFile() && /\.(md|mdx)$/i.test(entry.name));
+
+    if (hasMarkdownFiles) {
+      issues = await getCollection("newsletter", ({ data }) => !data.draft);
+    }
+  } catch {
+    issues = [];
+  }
+
+  const localPaths = issues.map((issue) => ({
+    params: { slug: issue.slug },
+    props: { mode: "local", issue },
+  }));
+
+  const localSlugs = new Set(localPaths.map((path) => path.params.slug));
+  const beehiivPosts = await getBeehiivPostsFromRss(SITE.newsletter.beehiivRssUrl, 250);
+  const beehiivPaths = beehiivPosts
+    .filter((post) => !localSlugs.has(String(post.issueNumber)))
+    .map((post) => ({
+      params: { slug: String(post.issueNumber) },
+      props: { mode: "beehiiv", post },
+    }));
+
+  return [...localPaths, ...beehiivPaths];
+}
+
+type Props =
+  | {
+      mode: "local";
+      issue: CollectionEntry<"newsletter">;
+    }
+  | {
+      mode: "beehiiv";
+      post: BeehiivPostItem;
+    };
+
+const props = Astro.props as Props;
+const isLocal = props.mode === "local";
+const localIssue = isLocal ? props.issue : null;
+const beehiivPost = !isLocal ? props.post : null;
+const contentResult = isLocal && localIssue ? await localIssue.render() : null;
+const Content = contentResult?.Content;
+
+const publishedDate = (isLocal ? localIssue?.data.pubDate : beehiivPost?.pubDate)?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+}) ?? "";
+
+const updatedDate = isLocal && localIssue?.data.updatedDate
+  ? localIssue.data.updatedDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  : null;
+---
+
+<Layout
+  title={`${isLocal ? localIssue?.data.title : beehiivPost?.title} | Newsletter`}
+  description={isLocal ? localIssue?.data.description : beehiivPost?.excerpt || beehiivPost?.title}
+>
+  <main>
+    <article>
+      <p class="back-link-wrap">
+        <a class="back-link" href="/newsletter">Back to Newsletter Archive</a>
+      </p>
+
+      <header class="issue-header">
+        <p class="eyebrow">
+          {isLocal
+            ? `Mechascopic's Dispatch · Issue #${localIssue?.data.issueNumber} · ${publishedDate}`
+            : `Mechascopic's Dispatch #${beehiivPost?.issueNumber} · ${publishedDate}`}
+          {isLocal && updatedDate && <span> · Updated {updatedDate}</span>}
+        </p>
+        <h1>{isLocal ? localIssue?.data.title : beehiivPost?.title}</h1>
+        {isLocal ? <p>{localIssue?.data.description}</p> : null}
+        {isLocal && localIssue?.data.beehiivUrl && (
+          <p>
+            <a href={localIssue.data.beehiivUrl} target="_blank" rel="noopener noreferrer">Also view this issue on Beehiiv</a>
+          </p>
+        )}
+      </header>
+
+      {isLocal && Content ? <Content /> : <section class="issue-content" set:html={beehiivPost?.contentHtml} />}
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .issue-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .back-link-wrap {
+    margin-bottom: 1rem;
+  }
+
+  .back-link {
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .back-link,
+  .back-link:visited {
+    color: var(--color-link);
+  }
+
+  .back-link:hover,
+  .back-link:focus {
+    color: var(--color-link-hover);
+  }
+
+  .eyebrow {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+
+  article :global(a),
+  article :global(a:visited) {
+    color: var(--color-accent);
+  }
+
+  article :global(a:hover),
+  article :global(a:focus) {
+    color: var(--color-link-hover);
+  }
+
+  .issue-content :global(p) {
+    margin: 0 0 1rem;
+  }
+</style>

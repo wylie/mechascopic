@@ -10,18 +10,66 @@ import AdSlot from "../components/AdSlot.astro";
     <p>I've been gaming for as long as I can remember, and I've always enjoyed connecting with other players who love learning, improving, and having fun together.</p>
     <p>This channel is where I share my best gaming content, from calm PvE strategy and builds to live streams, gameplay videos, and occasional reviews.</p>
     <p>You'll find a strong focus on approachable Destiny 2 PvE guides, practical loadout ideas, and creator workflows that help players improve consistently.</p>
-    <p>Whether you enjoy first-person shooters, indie games, or something in between, you'll find something here. I stream every week and post new videos regularly.</p>
+    <p>Whether you enjoy first-person shooters, indie games, or something in between, you'll find something here. I stream and post new videos regularly on YouTube.</p>
     <p>Come join the journey, hang out, learn new approaches, and have some fun.</p>
     <AdSlot label="About, mid page" minHeight="120px" />
-    <ul>
-      <li><a href="https://youtube.com/@mechascopic">YouTube</a></li>
-      <li><a href="https://twitch.tv/mechascopic">Twitch</a></li>
-    </ul>
+
+    <section class="platforms" aria-label="Where to watch">
+      <h2>Where to Watch</h2>
+      <p class="platforms-intro">Everything is on YouTube right now: live streams, guide videos, and gameplay uploads.</p>
+
+      <div class="platform-grid">
+        <article class="platform-card">
+          <h3>YouTube</h3>
+          <p>Live streams, guide videos, build walkthroughs, and focused PvE tips you can revisit anytime.</p>
+          <a href="https://youtube.com/@mechascopic" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+        </article>
+      </div>
+    </section>
   </main>
 </Layout>
 
 <style>
-  a {
+  .platforms {
+    margin-top: 1.75rem;
+  }
+
+  .platforms-intro {
+    margin-bottom: 1rem;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.9rem;
+  }
+
+  .platform-card {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.9rem;
+  }
+
+  .platform-card h3 {
+    margin: 0 0 0.45rem;
+    color: var(--color-fg);
+  }
+
+  .platform-card p {
+    margin: 0 0 0.8rem;
+  }
+
+  .platform-card a,
+  .platform-card a:visited {
     color: var(--color-accent);
+    font-weight: 600;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+  }
+
+  .platform-card a:hover,
+  .platform-card a:focus {
+    color: var(--color-link-hover);
   }
 </style>

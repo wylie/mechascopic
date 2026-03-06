@@ -15,6 +15,20 @@ const guides = defineCollection({
   }),
 });
 
+const newsletter = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    issueNumber: z.number().int().positive(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    beehiivUrl: z.string().url().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   guides,
+  newsletter,
 };

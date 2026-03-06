@@ -17,5 +17,9 @@ export const SITE = {
   adsense: {
     enabled: true, // Set to false to disable AdSense
     publisherId: "ca-pub-XXXXXXXXXXXXXXX" // Replace with your AdSense publisher ID
-  }
+  },
+  newsletter: {
+    beehiivSubscribeUrl: "https://mechascopic.beehiiv.com",
+    beehiivRssUrl: "https://rss.beehiiv.com/feeds/zIVcS5KXl9.xml",
+  },
 };
