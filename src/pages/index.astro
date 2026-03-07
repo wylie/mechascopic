@@ -9,11 +9,14 @@ const guidesHref = base + "guides";
 const gearHref = base + "gear";
 ---
 
-<Layout title="Mechascopic, chill gameplay and guides." description="Guides, gear, and chill gameplay content. Subscribe for the latest videos and live streams.">
+<Layout title="Mechascopic: games, guides, and creator updates." description="Gameplay, guides, builds, gear, and creator updates. Subscribe for the latest videos and live streams.">
   <main>
     <section class="hero">
-      <h1>Mechascopic, chill gameplay and guides.</h1>
-      <p>Guides, gear, and chill gameplay content. Subscribe for the latest videos and live streams.</p>
+      <div class="hero-title">
+        <h1>Mechascopic</h1>
+        <h2>games, guides, and creator updates</h2>
+      </div>
+      <p>Gameplay, guides, builds, gear, and creator updates. Subscribe for the latest videos and live streams.</p>
       <p>Mechascopic covers practical PvE gaming guides, build ideas, and creator-tested setup recommendations for players who want steady improvement without the stress.</p>
       <div class="cta-row">
         <Button href="https://youtube.com/@mechascopic" text="Subscribe on YouTube" target="_blank" />
@@ -125,6 +128,26 @@ const gearHref = base + "gear";
   .hero {
     text-align: center;
     margin-bottom: 2.5rem;
+  }
+
+  .hero-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0 0 0.85rem;
+  }
+
+  .hero-title h1 {
+    margin: 0;
+    font-size: clamp(2.25rem, 10vw, 60px);
+    line-height: 1.05;
+  }
+
+  .hero-title h2 {
+    margin: 0 0 clamp(1.5rem, 6vw, 3rem);
+    font-size: clamp(1.75rem, 6.2vw, 36px);
+    line-height: 1.05;
+    color: var(--color-fg);
   }
   .cta-row {
     display: flex;
