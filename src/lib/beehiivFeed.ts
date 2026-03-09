@@ -30,10 +30,35 @@ const stripHtmlTags = (value: string): string =>
     .trim();
 
 const isSafeHref = (href: string): boolean => /^(https?:|mailto:|\/)/i.test(href);
+const internalHosts = new Set(["mechascopic.com", "www.mechascopic.com"]);
 
 const sanitizeHref = (href: string): string => {
   const trimmed = href.trim();
   return isSafeHref(trimmed) ? trimmed : "#";
+};
+
+const normalizeLinkHref = (href: string): { href: string; openInNewTab: boolean } => {
+  const sanitized = sanitizeHref(decodeXmlEntities(href));
+
+  if (sanitized === "#") {
+    return { href: "#", openInNewTab: false };
+  }
+
+  if (/^mailto:/i.test(sanitized) || sanitized.startsWith("/")) {
+    return { href: sanitized, openInNewTab: false };
+  }
+
+  try {
+    const parsed = new URL(sanitized);
+    if (internalHosts.has(parsed.hostname.toLowerCase())) {
+      const relative = `${parsed.pathname || "/"}${parsed.search}${parsed.hash}`;
+      return { href: relative || "/", openInNewTab: false };
+    }
+
+    return { href: parsed.toString(), openInNewTab: true };
+  } catch {
+    return { href: "#", openInNewTab: false };
+  }
 };
 
 const escapeHtml = (value: string): string =>
@@ -55,14 +80,6 @@ const sanitizeHtml = (value: string): string => {
     .replace(/\s+on[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
     .replace(/\r/g, "")
     .replace(/\t/g, " ");
-
-  // Keep links but strip all attributes except a safe href and security rel.
-  safeHtml = safeHtml.replace(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi, (_match, attrs: string, text: string) => {
-    const hrefMatch = attrs.match(/href\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i);
-    const rawHref = hrefMatch?.[2] ?? hrefMatch?.[3] ?? hrefMatch?.[4] ?? "#";
-    const href = escapeHtml(sanitizeHref(decodeXmlEntities(rawHref)));
-    return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
-  });
 
   // Normalize supported structural/formatting tags, removing attributes.
   const allowedTagNames = [
@@ -112,8 +129,13 @@ const sanitizeHtml = (value: string): string => {
 
       const hrefMatch = full.match(/href\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i);
       const rawHref = hrefMatch?.[2] ?? hrefMatch?.[3] ?? hrefMatch?.[4] ?? "#";
-      const href = escapeHtml(sanitizeHref(decodeXmlEntities(rawHref)));
-      return protect(`<a href="${href}" target="_blank" rel="noopener noreferrer">`);
+      const { href, openInNewTab } = normalizeLinkHref(rawHref);
+      const escapedHref = escapeHtml(href);
+      return protect(
+        openInNewTab
+          ? `<a href="${escapedHref}" target="_blank" rel="noopener noreferrer">`
+          : `<a href="${escapedHref}">`,
+      );
     }
 
     if (isSelfClosingBr) {
