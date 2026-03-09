@@ -29,6 +29,13 @@ const stripHtmlTags = (value: string): string =>
     .replace(/\s+/g, " ")
     .trim();
 
+const isSafeHref = (href: string): boolean => /^(https?:|mailto:|\/)/i.test(href);
+
+const sanitizeHref = (href: string): string => {
+  const trimmed = href.trim();
+  return isSafeHref(trimmed) ? trimmed : "#";
+};
+
 const escapeHtml = (value: string): string =>
   value
     .replace(/&/g, "&amp;")
@@ -38,26 +45,88 @@ const escapeHtml = (value: string): string =>
     .replace(/'/g, "&#39;");
 
 const sanitizeHtml = (value: string): string => {
-  const withoutMarkup = value
+  let safeHtml = value
     .replace(/<style[\s\S]*?<\/style>/gi, "")
     .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, "")
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
     .replace(/<div[^>]*beehiiv__footer[\s\S]*$/gi, "")
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/(p|div|tr|table|section|article|li|h[1-6])>/gi, "\n")
-    .replace(/<[^>]+>/g, "")
+    .replace(/<!--([\s\S]*?)-->/g, "")
+    .replace(/\s+on[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
     .replace(/\r/g, "")
     .replace(/\t/g, " ");
 
-  const paragraphs = withoutMarkup
-    .split(/\n{1,}/)
-    .map((line) => line.replace(/\s+/g, " ").trim())
-    .filter((line) => line.length > 0 && !/powered by beehiiv/i.test(line));
+  // Keep links but strip all attributes except a safe href and security rel.
+  safeHtml = safeHtml.replace(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi, (_match, attrs: string, text: string) => {
+    const hrefMatch = attrs.match(/href\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i);
+    const rawHref = hrefMatch?.[2] ?? hrefMatch?.[3] ?? hrefMatch?.[4] ?? "#";
+    const href = escapeHtml(sanitizeHref(decodeXmlEntities(rawHref)));
+    return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+  });
 
-  if (paragraphs.length === 0) {
+  // Normalize supported structural/formatting tags, removing attributes.
+  const allowedTagNames = [
+    "p",
+    "br",
+    "ul",
+    "ol",
+    "li",
+    "strong",
+    "b",
+    "em",
+    "i",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "blockquote",
+    "code",
+    "pre",
+  ];
+
+  const placeholders = new Map<string, string>();
+  let placeholderIndex = 0;
+  const protect = (tag: string): string => {
+    const key = `__BEEHIIV_HTML_${placeholderIndex++}__`;
+    placeholders.set(key, tag);
+    return key;
+  };
+
+  safeHtml = safeHtml.replace(/<\s*\/?\s*([a-z0-9]+)\b[^>]*>/gi, (full, tagName: string) => {
+    const lower = tagName.toLowerCase();
+    const isClosing = /^<\s*\//.test(full);
+    const isSelfClosingBr = lower === "br";
+
+    if (!allowedTagNames.includes(lower)) {
+      return "";
+    }
+
+    if (isSelfClosingBr) {
+      return protect("<br>");
+    }
+
+    return protect(isClosing ? `</${lower}>` : `<${lower}>`);
+  });
+
+  // Strip any remaining unknown markup, then restore safe normalized tags.
+  safeHtml = safeHtml.replace(/<[^>]+>/g, "");
+  for (const [key, tag] of placeholders.entries()) {
+    safeHtml = safeHtml.replaceAll(key, tag);
+  }
+
+  safeHtml = safeHtml
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/<p>\s*powered by beehiiv\s*<\/p>/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+  if (!safeHtml) {
     return "";
   }
 
-  return paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n");
+  return safeHtml;
 };
 
 const getExcerpt = (value: string, maxChars = 100): string => {
