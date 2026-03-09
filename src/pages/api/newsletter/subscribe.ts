@@ -10,6 +10,51 @@ const badRequest = (error: string, status = 400) =>
     },
   });
 
+const extractBeehiivErrorMessage = (payload: unknown) => {
+  if (!payload || typeof payload !== "object") {
+    return "";
+  }
+
+  const maybePayload = payload as {
+    message?: unknown;
+    error?: unknown;
+    errors?: Array<{ message?: unknown; error?: unknown; field?: unknown }>;
+  };
+
+  if (typeof maybePayload.message === "string" && maybePayload.message.trim()) {
+    return maybePayload.message.trim();
+  }
+
+  if (typeof maybePayload.error === "string" && maybePayload.error.trim()) {
+    return maybePayload.error.trim();
+  }
+
+  if (Array.isArray(maybePayload.errors) && maybePayload.errors.length > 0) {
+    const first = maybePayload.errors[0];
+    const firstMessage =
+      typeof first?.message === "string"
+        ? first.message.trim()
+        : typeof first?.error === "string"
+          ? first.error.trim()
+          : "";
+    if (firstMessage) {
+      return firstMessage;
+    }
+  }
+
+  return "";
+};
+
+const isAlreadySubscribedMessage = (message: string) => {
+  const normalized = message.toLowerCase();
+  return (
+    normalized.includes("already subscribed") ||
+    normalized.includes("already exists") ||
+    normalized.includes("already been taken") ||
+    normalized.includes("existing subscription")
+  );
+};
+
 export const POST: APIRoute = async ({ request }) => {
   const beehiivApiKey = import.meta.env.BEEHIIV_API_KEY;
   const beehiivPublicationId = import.meta.env.BEEHIIV_PUBLICATION_ID;
@@ -68,14 +113,36 @@ export const POST: APIRoute = async ({ request }) => {
       }),
     });
 
-    const payload = await response.json().catch(() => null);
+    const rawBody = await response.text();
+    let payload: unknown = null;
+    if (rawBody) {
+      try {
+        payload = JSON.parse(rawBody);
+      } catch {
+        payload = null;
+      }
+    }
     if (!response.ok) {
-      const apiMessage =
-        payload && typeof payload === "object" && "message" in payload
-          ? String((payload as { message?: string }).message)
-          : "Subscription failed.";
+      const apiMessage = extractBeehiivErrorMessage(payload);
+      const textFallback = rawBody.trim();
+      const fallbackMessage =
+        textFallback && !textFallback.startsWith("<") ? textFallback.slice(0, 240) : "Subscription failed.";
 
-      return badRequest(apiMessage, response.status);
+      // Beehiiv may return duplicate-subscription errors with non-2xx status.
+      if ((response.status === 400 || response.status === 409) && isAlreadySubscribedMessage(apiMessage)) {
+        return new Response(JSON.stringify({ ok: true, alreadySubscribed: true }), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+        });
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        return badRequest("Newsletter signup configuration is invalid. Please contact support.", 500);
+      }
+
+      return badRequest(apiMessage || fallbackMessage, response.status);
     }
 
     return new Response(JSON.stringify({ ok: true }), {
