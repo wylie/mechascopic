@@ -51,7 +51,8 @@ const activeNavLinkStyle =
           gtag('js', new Date());
           const host = window.location.hostname;
           const isLocalHost = host === 'localhost' || host === '127.0.0.1';
-          if (!isLocalHost) {
+          const isVercelHost = host === 'mechascopic.vercel.app' || host.endsWith('.vercel.app');
+          if (!isLocalHost && !isVercelHost) {
             gtag('config', gaMeasurementId, { page_path: window.location.pathname });
           }
         </script>
