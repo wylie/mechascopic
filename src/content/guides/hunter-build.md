@@ -48,5 +48,5 @@ As of March 2026, the skill tree branches into Survival, Mobility, and Condition
 
 ## Related Guides
 
-- [ARC Raiders Budget PC Setup Guide](/guides/budget-setup)
+- [ARC Raiders PS5 Settings Guide](/guides/budget-setup)
 - [How to Stay Calm in ARC Raiders](/guides/calm-pve)

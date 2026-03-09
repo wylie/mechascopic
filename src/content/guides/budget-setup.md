@@ -1,48 +1,56 @@
 ---
-title: "ARC Raiders Budget PC Setup Guide (Smooth and Stable)"
-description: "Affordable priorities for stable solo performance in ARC Raiders, based on official minimum and recommended specs."
+title: "ARC Raiders PS5 Settings Guide (Smooth and Stable)"
+description: "Practical PS5 settings and habits for smoother ARC Raiders sessions with clearer visibility and steadier control."
 pubDate: 2026-01-15
-updatedDate: 2026-03-03
+updatedDate: 2026-03-08
 game: "ARC Raiders"
-tags: ["gear", "arc-raiders", "performance"]
-youtubeUrl: "https://www.youtube.com/watch?v=yyyyyyy"
+tags: ["settings", "arc-raiders", "performance", "console"]
 heroImage: "/images/guides/budget-setup.jpg"
-affiliateBlock:
-  - "Keychron K6 Wireless Keyboard"
-  - "Sony WH-1000XM5 Headphones"
 ---
 
 ## Overview
 
-If you want steady solo extraction runs, stability matters more than ultra settings.
-ARC Raiders' official PC requirements list 12 GB RAM minimum / 16 GB recommended, with DX12 GPUs from the GTX 1050 Ti / RX 580 tier upward.
+If you play ARC Raiders on PS5, smooth performance and clear information matter more than visual extras.
+This guide focuses on practical console-side settings and habits that reduce input friction and keep fights readable.
 
-This guide focuses on the highest-value upgrades first so you can keep frame pacing predictable during machine fights and player pressure.
+The goal is simple: keep frame pacing stable, audio clear, and controls predictable during high-pressure extraction runs.
 
-## Budget Priorities (In Order)
+## PS5 Setup Priorities (In Order)
 
-1. **SSD first** for faster loading and less hitching during asset-heavy moments.
-2. **16 GB RAM target** to match the recommended baseline.
-3. **GPU next** if you are below the recommended tier (RTX 2070 / RX 5700 XT class).
-4. **CPU upgrade** after GPU/RAM unless you are clearly CPU-limited.
+1. **Prefer performance-focused display mode** when available.
+2. **Reduce motion blur and extra camera shake** to improve target tracking.
+3. **Use a moderate controller deadzone** to avoid drift without losing micro-aim.
+4. **Keep sensitivity consistent** instead of changing it every session.
+
+## Recommended PS5 Settings Baseline
+
+- Display mode: prioritize framerate/performance.
+- Motion blur: low or off.
+- Camera shake: low.
+- Field of view: increase gradually until awareness improves without making targets too small.
+- Aim sensitivity: start lower than expected, then increase in small steps.
+- Aim acceleration/smoothing: minimal if the option exists.
+
+## Controller and Audio Tips
+
+- Keep your stick deadzones as low as possible without introducing stick drift.
+- Turn down trigger vibration intensity if it interferes with rapid follow-up shots.
+- Use stereo headphones and tune game audio for footsteps/mechanical cues first.
+- Keep voice chat volume below game effects so directional audio remains readable.
 
 ## In-Game Stability Tips
 
-- Prefer a locked framerate over uncapped swings.
-- Lower costly settings first (shadows, volumetrics, and heavy post-processing) before touching clarity-critical settings.
-- Keep background apps minimal in long sessions to avoid sudden frametime spikes.
-- Use wired networking when possible; extraction games punish unstable latency.
+- Close other downloads while playing to reduce latency spikes.
+- Prefer wired Ethernet over Wi-Fi when possible.
+- Restart the game after long sessions if input or audio starts feeling inconsistent.
+- Keep your HUD and minimap habits consistent so your decision speed improves.
 
-## Gear List
+## Quick Tune Process (10 Minutes)
 
-- Keychron K6 Wireless Keyboard (reliable, compact input)
-- Sony WH-1000XM5 Headphones (clear directional audio and isolation)
-
-<AffiliateBlock names={["Keychron K6 Wireless Keyboard", "Sony WH-1000XM5 Headphones"]} />
-
-## Video Overview
-
-<YouTubeEmbed url="https://www.youtube.com/watch?v=yyyyyyy" />
+1. Run one match at your current settings.
+2. Lower blur/shake and test tracking in close fights.
+3. Adjust sensitivity by small increments only.
+4. Lock those settings for a full week before changing again.
 
 ## Related Guides
 

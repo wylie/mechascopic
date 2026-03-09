@@ -42,5 +42,5 @@ Use this reset routine between and during runs.
 
 ## Related Guides
 
-- [ARC Raiders Budget PC Setup Guide (Smooth and Stable)](/guides/budget-setup)
+- [ARC Raiders PS5 Settings Guide (Smooth and Stable)](/guides/budget-setup)
 - [ARC Raiders Beginner Build Path (Solo or Trio)](/guides/hunter-build)
