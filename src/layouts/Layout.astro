@@ -4,6 +4,7 @@ import { SITE } from "../config";
 const base = import.meta.env.BASE_URL;
 const gaMeasurementId = SITE.gaMeasurementId;
 const shouldLoadGa = !!gaMeasurementId;
+const canonicalUrl = new URL(Astro.url.pathname, SITE.url).toString();
 
 const normalizePath = (value: string): string => {
   const trimmed = value.replace(/\/+$/, "");
@@ -40,7 +41,7 @@ const activeNavLinkStyle =
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{Astro.props.title ? Astro.props.title + ' | ' + SITE.name : SITE.name}</title>
     <meta name="description" content={Astro.props.description || SITE.description} />
-    <link rel="canonical" href={SITE.url + Astro.url.pathname} />
+    <link rel="canonical" href={canonicalUrl} />
     {shouldLoadGa && (
       <>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>

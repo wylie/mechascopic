@@ -2,9 +2,9 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-const isProd = process.env.NODE_ENV === "production";
 export default defineConfig({
-  site: isProd ? "https://mechascopic.com/" : "http://localhost:4321/",
+  // Keep a single canonical origin for sitemap and generated URLs.
+  site: "https://mechascopic.com",
   integrations: [sitemap()],
   base: "/",
 });
