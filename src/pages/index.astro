@@ -7,6 +7,7 @@ import AdSlot from "../components/AdSlot.astro";
 const base = import.meta.env.BASE_URL;
 const guidesHref = base + "guides";
 const gearHref = base + "gear";
+const newsletterSubscribeHref = "https://mechascopic.beehiiv.com/subscribe";
 ---
 
 <Layout title="Mechascopic: games, guides, and creator updates." description="Gameplay, guides, builds, gear, and creator updates. Subscribe for the latest videos and live streams.">
@@ -42,17 +43,16 @@ const gearHref = base + "gear";
       <p>Get gameplay notes, guide highlights, and creator updates delivered every two weeks.</p>
       <div class="newsletter-card">
         <h3>Subscribe to Mechascopic's Dispatch</h3>
-        <form class="newsletter-form" id="newsletter-form" action="/api/newsletter/subscribe" method="post">
+        <form class="newsletter-form" id="newsletter-form" action={newsletterSubscribeHref} method="get">
           <label for="newsletter-first-name">First name</label>
           <input
             class="newsletter-input"
             id="newsletter-first-name"
-            name="firstName"
+            name="first_name"
             type="text"
             placeholder="Your first name"
             autocomplete="given-name"
             maxlength="80"
-            required
           />
 
           <label for="newsletter-email">Email address</label>
@@ -83,40 +83,30 @@ const gearHref = base + "gear";
         event.preventDefault();
 
         const emailInput = form.elements.namedItem("email");
-        const firstNameInput = form.elements.namedItem("firstName");
+        const firstNameInput = form.elements.namedItem("first_name");
         if (!(emailInput instanceof HTMLInputElement)) {
           return;
         }
 
-        const firstName = firstNameInput instanceof HTMLInputElement ? firstNameInput.value : "";
+        if (!form.reportValidity()) {
+          return;
+        }
 
-        feedback.textContent = "Subscribing...";
+        const firstName = firstNameInput instanceof HTMLInputElement ? firstNameInput.value.trim() : "";
+
+        feedback.textContent = "Taking you to secure signup...";
         feedback.dataset.state = "pending";
 
         try {
-          const response = await fetch(form.action, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: emailInput.value,
-              firstName,
-            }),
-          });
-
-          const payload = await response.json().catch(() => null);
-          if (!response.ok || !payload?.ok) {
-            feedback.textContent = payload?.error || "Could not subscribe right now. Please try again.";
-            feedback.dataset.state = "error";
-            return;
+          const target = new URL(form.action, window.location.origin);
+          target.searchParams.set("email", emailInput.value.trim());
+          target.searchParams.set("utm_source", "mechascopic.com");
+          if (firstName) {
+            target.searchParams.set("first_name", firstName);
           }
-
-          feedback.textContent = "You are subscribed. Check your inbox for confirmation.";
-          feedback.dataset.state = "success";
-          form.reset();
+          window.location.assign(target.toString());
         } catch {
-          feedback.textContent = "Could not subscribe right now. Please try again.";
+          feedback.textContent = "Could not open signup right now. Please try again.";
           feedback.dataset.state = "error";
         }
       });

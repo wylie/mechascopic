@@ -30,19 +30,11 @@ Set `draft: true` to keep an issue out of production pages.
 
 ### Newsletter Signup (Beehiiv)
 
-Home page newsletter signup posts to `src/pages/api/newsletter/subscribe.ts`.
+Home page newsletter signup redirects users to the hosted Beehiiv subscribe page:
 
-Add these env vars to `.env` (and your host secrets):
+- `https://mechascopic.beehiiv.com/subscribe`
 
-```bash
-BEEHIIV_API_KEY=your_beehiiv_api_key
-BEEHIIV_PUBLICATION_ID=your_beehiiv_publication_id
-```
-
-How to get them:
-
-1. In Beehiiv, create an API key with permission to manage subscriptions.
-1. Find your publication ID in Beehiiv settings/API area.
+This keeps signup working on GitHub Pages static hosting without requiring server-side API routes.
 
 ## Google Analytics
 
