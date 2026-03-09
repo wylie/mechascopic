@@ -42,6 +42,8 @@ const activeNavLinkStyle =
     <title>{Astro.props.title ? Astro.props.title + ' | ' + SITE.name : SITE.name}</title>
     <meta name="description" content={Astro.props.description || SITE.description} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" href={`${base}favicon.png`} />
+    <link rel="apple-touch-icon" href={`${base}favicon.png`} />
     {shouldLoadGa && (
       <>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
