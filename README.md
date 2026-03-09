@@ -30,11 +30,34 @@ Set `draft: true` to keep an issue out of production pages.
 
 ### Newsletter Signup (Beehiiv)
 
-Home page newsletter signup redirects users to the hosted Beehiiv subscribe page:
+Home page newsletter signup posts to `POST /api/newsletter/subscribe` and keeps users on the site.
 
-- `https://mechascopic.beehiiv.com/subscribe`
+Required server environment variables:
 
-This keeps signup working on GitHub Pages static hosting without requiring server-side API routes.
+```bash
+BEEHIIV_API_KEY=bh_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+BEEHIIV_PUBLICATION_ID=pub_xxxxxxxxxxxxxxxx
+```
+
+If either value is missing, the subscribe API returns a configuration error.
+
+## Deploying To Vercel
+
+This project is configured for Astro server output with the Vercel adapter.
+
+Vercel project settings:
+
+- Framework preset: `Astro`
+- Build command: `npm run build`
+- Output directory: leave default for Astro
+
+Set these environment variables in Vercel:
+
+- `PUBLIC_GA_MEASUREMENT_ID`
+- `BEEHIIV_API_KEY`
+- `BEEHIIV_PUBLICATION_ID`
+
+After connecting the GitHub repo in Vercel, pushes to `main` can deploy automatically.
 
 ## Google Analytics
 

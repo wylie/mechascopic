@@ -5,6 +5,8 @@ import { readdir } from "node:fs/promises";
 import { SITE } from "../../config";
 import { getBeehiivPostsFromRss, type BeehiivPostItem } from "../../lib/beehiivFeed";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const contentDir = new URL("../../content/newsletter", import.meta.url);
   let issues: CollectionEntry<"newsletter">[] = [];
