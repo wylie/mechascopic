@@ -1,42 +1,53 @@
 ---
-const fallbackVideos = [
-  {
-    title: "Latest Video",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    watchUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  },
-  {
-    title: "Latest Video",
-    embedUrl: "https://www.youtube.com/embed/3JZ_D3ELwOQ",
-    watchUrl: "https://www.youtube.com/watch?v=3JZ_D3ELwOQ",
-  },
-  {
-    title: "Latest Video",
-    embedUrl: "https://www.youtube.com/embed/l482T0yNkeo",
-    watchUrl: "https://www.youtube.com/watch?v=l482T0yNkeo",
-  },
-];
+import { SITE } from "../config";
+import { getLatestYouTubeVideos, resolveYouTubeChannelId } from "../lib/youtubeFeed";
+
+const resolvedChannelId = await resolveYouTubeChannelId({
+  channelId: SITE.youtubeChannelId,
+  channelUrl: SITE.youtube,
+  channelHandle: SITE.youtubeHandle,
+});
+
+const initialVideos = resolvedChannelId
+  ? await getLatestYouTubeVideos(resolvedChannelId, 3, {
+      excludeShorts: true,
+      scanLimit: 15,
+    })
+  : [];
+
+const fallbackVideos = initialVideos.map((video) => ({
+  title: video.title,
+  embedUrl: video.embedUrl,
+  watchUrl: video.watchUrl,
+}));
+
 const base = import.meta.env.BASE_URL;
 ---
 
 <section class="latest-videos" data-latest-videos data-base={base}>
   <h2>Latest Videos</h2>
   <div class="video-grid" data-videos-grid>
-    {fallbackVideos.map((video) => (
-      <article class="video-card">
-        <div class="video-frame">
-          <iframe
-            src={video.embedUrl}
-            title={video.title}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
-        </div>
-        <h3>{video.title}</h3>
-        <a href={video.watchUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
-      </article>
-    ))}
+    {fallbackVideos.length > 0 ? (
+      fallbackVideos.map((video) => (
+        <article class="video-card">
+          <div class="video-frame">
+            <iframe
+              src={video.embedUrl}
+              title={video.title}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <h3>{video.title}</h3>
+          <a href={video.watchUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+        </article>
+      ))
+    ) : (
+      <p class="video-empty">
+        Videos are syncing. Visit <a href={SITE.youtube} target="_blank" rel="noopener noreferrer">@{SITE.youtubeHandle}</a> directly.
+      </p>
+    )}
   </div>
 </section>
 
@@ -107,6 +118,14 @@ const base = import.meta.env.BASE_URL;
     gap: 1rem;
     align-items: start;
     grid-auto-rows: 1fr;
+  }
+
+  :global(.latest-videos .video-empty) {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-alt);
   }
 
   :global(.latest-videos .video-card) {
