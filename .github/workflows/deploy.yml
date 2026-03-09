@@ -5,6 +5,12 @@ on:
   # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [main]
+  # Check for new external feed content near publish time.
+  schedule:
+    # 4:05 PM ET in DST (UTC-4)
+    - cron: "5 20 * * 0"
+    # 4:05 PM ET in standard time (UTC-5)
+    - cron: "5 21 * * 0"
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
@@ -21,28 +27,69 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.schedule_gate.outputs.should_deploy }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Decide whether scheduled run should deploy
+        id: schedule_gate
+        shell: bash
+        run: |
+          should_deploy="true"
+
+          # Restrict scheduled runs to the biweekly Sunday 4:05 PM ET window.
+          # Push and manual runs should always deploy.
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            dow_et="$(TZ=America/New_York date +%u)"
+            hour_et="$(TZ=America/New_York date +%H)"
+            minute_et="$(TZ=America/New_York date +%M)"
+            iso_week_et="$(TZ=America/New_York date +%V)"
+
+            # Anchor cadence to publication week that started on 2026-03-08 (ISO week 10).
+            anchor_week=10
+            week_parity="$(( (10#$iso_week_et - anchor_week + 104) % 2 ))"
+
+            if [[ "$dow_et" != "7" || "$hour_et" != "16" || "$minute_et" != "05" || "$week_parity" != "0" ]]; then
+              should_deploy="false"
+            fi
+
+            echo "ET now: $(TZ=America/New_York date '+%Y-%m-%d %H:%M %Z')"
+            echo "ISO week (ET): $iso_week_et"
+            echo "Parity from anchor week: $week_parity"
+          fi
+
+          echo "should_deploy=$should_deploy" >> "$GITHUB_OUTPUT"
+
+      - name: Skip scheduled deploy outside window
+        if: steps.schedule_gate.outputs.should_deploy != 'true'
+        run: echo "Skipping scheduled run outside biweekly 4:05 PM ET window."
+
       - name: Setup Pages
+        if: steps.schedule_gate.outputs.should_deploy == 'true'
         uses: actions/configure-pages@v5
       - name: Setup Node.js
+        if: steps.schedule_gate.outputs.should_deploy == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
       - name: Clean install
+        if: steps.schedule_gate.outputs.should_deploy == 'true'
         run: npm install
       - name: Build
+        if: steps.schedule_gate.outputs.should_deploy == 'true'
         env:
           PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.PUBLIC_GA_MEASUREMENT_ID }}
         run: npm run build
       - name: Upload artifact
+        if: steps.schedule_gate.outputs.should_deploy == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
   deploy:
+    if: needs.build.outputs.should_deploy == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
