@@ -66,6 +66,7 @@ const sanitizeHtml = (value: string): string => {
 
   // Normalize supported structural/formatting tags, removing attributes.
   const allowedTagNames = [
+    "a",
     "p",
     "br",
     "ul",
@@ -98,9 +99,21 @@ const sanitizeHtml = (value: string): string => {
     const lower = tagName.toLowerCase();
     const isClosing = /^<\s*\//.test(full);
     const isSelfClosingBr = lower === "br";
+    const isAnchor = lower === "a";
 
     if (!allowedTagNames.includes(lower)) {
       return "";
+    }
+
+    if (isAnchor) {
+      if (isClosing) {
+        return protect("</a>");
+      }
+
+      const hrefMatch = full.match(/href\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i);
+      const rawHref = hrefMatch?.[2] ?? hrefMatch?.[3] ?? hrefMatch?.[4] ?? "#";
+      const href = escapeHtml(sanitizeHref(decodeXmlEntities(rawHref)));
+      return protect(`<a href="${href}" target="_blank" rel="noopener noreferrer">`);
     }
 
     if (isSelfClosingBr) {
