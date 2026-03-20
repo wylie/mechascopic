@@ -59,6 +59,19 @@ Set these environment variables in Vercel:
 
 After connecting the GitHub repo in Vercel, pushes to `main` can deploy automatically.
 
+## Monetization (Monetag)
+
+Monetag is configured with two required assets:
+
+1. Root service worker file at `public/sw.js` (published as `/sw.js`)
+2. Head script in `src/layouts/Layout.astro`:
+
+```html
+<script src="https://quge5.com/88/tag.min.js" data-zone="221756" async data-cfasync="false"></script>
+```
+
+If you replace either value in the future, update both together so Monetag continues to initialize correctly.
+
 ## Google Analytics
 
 Google Analytics (GA4) is configured globally in `src/layouts/Layout.astro` and reads the measurement ID from an environment variable.

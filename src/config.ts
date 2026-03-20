@@ -1,6 +1,6 @@
 /*
   Global site config for Mechascopic
-  Update these values to configure site name, URL, social links, AdSense, etc.
+  Update these values to configure site name, URL, social links, monetization, etc.
 */
 export const SITE = {
   name: "Mechascopic",
@@ -14,9 +14,9 @@ export const SITE = {
   twitch: "https://twitch.tv/mechascopic", // Optional
   discord: "", // Optional
   email: "contact@mechascopic.com", // Update as needed
-  adsense: {
-    enabled: true, // Set to false to disable AdSense
-    publisherId: "ca-pub-XXXXXXXXXXXXXXX" // Replace with your AdSense publisher ID
+  monetization: {
+    provider: "Monetag",
+    enabled: true,
   },
   newsletter: {
     beehiivSubscribeUrl: "https://mechascopic.beehiiv.com",
