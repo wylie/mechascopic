@@ -5,55 +5,40 @@ import { readdir } from "node:fs/promises";
 import { SITE } from "../../config";
 import { getBeehiivPostsFromRss, type BeehiivPostItem } from "../../lib/beehiivFeed";
 
-export const prerender = true;
-
-export async function getStaticPaths() {
+async function getPublishedIssues() {
   const contentDir = new URL("../../content/newsletter", import.meta.url);
-  let issues: CollectionEntry<"newsletter">[] = [];
 
   try {
     const entries = await readdir(contentDir, { withFileTypes: true });
     const hasMarkdownFiles = entries.some((entry) => entry.isFile() && /\.(md|mdx)$/i.test(entry.name));
 
-    if (hasMarkdownFiles) {
-      issues = await getCollection("newsletter", ({ data }) => !data.draft);
+    if (!hasMarkdownFiles) {
+      return [];
     }
+
+    return await getCollection("newsletter", ({ data }) => !data.draft);
   } catch {
-    issues = [];
+    return [];
   }
-
-  const localPaths = issues.map((issue) => ({
-    params: { slug: issue.slug },
-    props: { mode: "local", issue },
-  }));
-
-  const localSlugs = new Set(localPaths.map((path) => path.params.slug));
-  const beehiivPosts = await getBeehiivPostsFromRss(SITE.newsletter.beehiivRssUrl, 250);
-  const beehiivPaths = beehiivPosts
-    .filter((post) => !localSlugs.has(String(post.issueNumber)))
-    .map((post) => ({
-      params: { slug: String(post.issueNumber) },
-      props: { mode: "beehiiv", post },
-    }));
-
-  return [...localPaths, ...beehiivPaths];
 }
 
-type Props =
-  | {
-      mode: "local";
-      issue: CollectionEntry<"newsletter">;
-    }
-  | {
-      mode: "beehiiv";
-      post: BeehiivPostItem;
-    };
+const slug = String(Astro.params.slug ?? "");
+const issues: CollectionEntry<"newsletter">[] = await getPublishedIssues();
+const localIssue = issues.find((issue) => issue.slug === slug) ?? null;
 
-const props = Astro.props as Props;
-const isLocal = props.mode === "local";
-const localIssue = isLocal ? props.issue : null;
-const beehiivPost = !isLocal ? props.post : null;
-const contentResult = isLocal && localIssue ? await localIssue.render() : null;
+let beehiivPost: BeehiivPostItem | null = null;
+if (!localIssue) {
+  const beehiivPosts = await getBeehiivPostsFromRss(SITE.newsletter.beehiivRssUrl, 250);
+  beehiivPost = beehiivPosts.find((post) => String(post.issueNumber) === slug) ?? null;
+}
+
+if (!localIssue && !beehiivPost) {
+  Astro.response.status = 404;
+}
+
+const isLocal = Boolean(localIssue);
+const isFound = Boolean(localIssue || beehiivPost);
+const contentResult = localIssue ? await localIssue.render() : null;
 const Content = contentResult?.Content;
 
 const publishedDate = (isLocal ? localIssue?.data.pubDate : beehiivPost?.pubDate)?.toLocaleDateString("en-US", {
@@ -72,33 +57,43 @@ const updatedDate = isLocal && localIssue?.data.updatedDate
 ---
 
 <Layout
-  title={`${isLocal ? localIssue?.data.title : beehiivPost?.title} | Newsletter`}
-  description={isLocal ? localIssue?.data.description : beehiivPost?.excerpt || beehiivPost?.title}
+  title={`${isFound ? (isLocal ? localIssue?.data.title : beehiivPost?.title) : "Newsletter Not Found"} | Newsletter`}
+  description={isFound ? (isLocal ? localIssue?.data.description : beehiivPost?.excerpt || beehiivPost?.title) : "This newsletter issue was not found."}
 >
   <main>
-    <article>
-      <p class="back-link-wrap">
-        <a class="back-link" href="/newsletter">Back to Newsletter Archive</a>
-      </p>
-
-      <header class="issue-header">
-        <p class="eyebrow">
-          {isLocal
-            ? `Mechascopic's Dispatch · Issue #${localIssue?.data.issueNumber} · ${publishedDate}`
-            : `Mechascopic's Dispatch #${beehiivPost?.issueNumber} · ${publishedDate}`}
-          {isLocal && updatedDate && <span> · Updated {updatedDate}</span>}
+    {isFound ? (
+      <article>
+        <p class="back-link-wrap">
+          <a class="back-link" href="/newsletter">Back to Newsletter Archive</a>
         </p>
-        <h1>{isLocal ? localIssue?.data.title : beehiivPost?.title}</h1>
-        {isLocal ? <p>{localIssue?.data.description}</p> : null}
-        {isLocal && localIssue?.data.beehiivUrl && (
-          <p>
-            <a href={localIssue.data.beehiivUrl} target="_blank" rel="noopener noreferrer">Also view this issue on Beehiiv</a>
-          </p>
-        )}
-      </header>
 
-      {isLocal && Content ? <Content /> : <section class="issue-content" set:html={beehiivPost?.contentHtml} />}
-    </article>
+        <header class="issue-header">
+          <p class="eyebrow">
+            {isLocal
+              ? `Mechascopic's Dispatch · Issue #${localIssue?.data.issueNumber} · ${publishedDate}`
+              : `Mechascopic's Dispatch #${beehiivPost?.issueNumber} · ${publishedDate}`}
+            {isLocal && updatedDate && <span> · Updated {updatedDate}</span>}
+          </p>
+          <h1>{isLocal ? localIssue?.data.title : beehiivPost?.title}</h1>
+          {isLocal ? <p>{localIssue?.data.description}</p> : null}
+          {isLocal && localIssue?.data.beehiivUrl && (
+            <p>
+              <a href={localIssue.data.beehiivUrl} target="_blank" rel="noopener noreferrer">Also view this issue on Beehiiv</a>
+            </p>
+          )}
+        </header>
+
+        {isLocal && Content ? <Content /> : <section class="issue-content" set:html={beehiivPost?.contentHtml} />}
+      </article>
+    ) : (
+      <article>
+        <h1>Issue Not Found</h1>
+        <p>That newsletter issue is not available yet. Check back in a minute or open the archive.</p>
+        <p class="back-link-wrap">
+          <a class="back-link" href="/newsletter">Back to Newsletter Archive</a>
+        </p>
+      </article>
+    )}
   </main>
 </Layout>
 
