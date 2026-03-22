@@ -66,10 +66,9 @@ const newsletterName = "Mechascopic's Dispatch";
           <li>
             <article>
               <h2>
-                <a href={`/newsletter/${post.issueNumber}`}>{post.title}</a>
+                <a href={`/newsletter/${post.issueNumber}`}>{`${post.title} #${post.issueNumber}`}</a>
               </h2>
               <p class="meta">
-                Mechascopic's Dispatch #{post.issueNumber} · {" "}
                 {post.pubDate.toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
