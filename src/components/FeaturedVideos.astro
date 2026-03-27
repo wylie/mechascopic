@@ -116,7 +116,6 @@ const base = import.meta.env.BASE_URL;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
-    align-items: start;
   }
 
   :global(.latest-videos .video-empty) {
@@ -165,6 +164,16 @@ const base = import.meta.env.BASE_URL;
   :global(.latest-videos .video-card a) {
     color: var(--color-accent);
     margin-top: 0.15rem;
+  }
+
+  @media (min-width: 901px) {
+    :global(.latest-videos .video-card) {
+      height: 100%;
+    }
+
+    :global(.latest-videos .video-card a) {
+      margin-top: auto;
+    }
   }
 
   :global(.latest-videos .video-card a:hover),
