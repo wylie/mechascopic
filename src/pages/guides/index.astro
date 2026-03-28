@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import GuideFilters from "../../components/GuideFilters.astro";
 import GuidesList from "../../components/GuidesList.astro";
-import AdSlot from "../../components/AdSlot.astro";
+import SupportCard from "../../components/SupportCard.astro";
 import { getCollection } from "astro:content";
 
 const guides = await getCollection("guides");
@@ -20,9 +20,8 @@ const topicOptions = Array.from(
   <main>
     <h1>Guides</h1>
     <p>Find step-by-step PvE gaming guides, class builds, and strategy breakdowns designed for clear execution, calm gameplay, and steady progress.</p>
-    <AdSlot label="Guides, below title" minHeight="110px" />
     <GuideFilters gameOptions={gameOptions} topicOptions={topicOptions} />
     <GuidesList guides={guides} enableFiltering={true} />
-    <AdSlot label="Guides, below list" minHeight="140px" />
+    <SupportCard compact={true} description="If these guides save you time, you can support more of them here." />
   </main>
 </Layout>

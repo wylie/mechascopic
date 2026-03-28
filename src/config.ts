@@ -1,6 +1,6 @@
 /*
   Global site config for Mechascopic
-  Update these values to configure site name, URL, social links, monetization, etc.
+  Update these values to configure site name, URL, social links, etc.
 */
 export const SITE = {
   name: "Mechascopic",
@@ -14,10 +14,6 @@ export const SITE = {
   twitch: "https://twitch.tv/mechascopic", // Optional
   discord: "", // Optional
   email: "contact@mechascopic.com", // Update as needed
-  monetization: {
-    provider: "Monetag",
-    enabled: true,
-  },
   newsletter: {
     beehiivSubscribeUrl: "https://mechascopic.beehiiv.com",
     beehiivRssUrl: "https://rss.beehiiv.com/feeds/zIVcS5KXl9.xml",
