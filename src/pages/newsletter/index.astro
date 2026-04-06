@@ -22,12 +22,30 @@ async function getPublishedIssues() {
   }
 }
 
+const newsletterName = "Mechascopic's Dispatch";
 const issues = (await getPublishedIssues()).sort(
   (first, second) => second.data.pubDate.getTime() - first.data.pubDate.getTime()
 );
-const beehiivPosts = issues.length === 0 ? await getBeehiivPostsFromRss(SITE.newsletter.beehiivRssUrl, 24) : [];
-
-const newsletterName = "Mechascopic's Dispatch";
+const beehiivPosts = await getBeehiivPostsFromRss(SITE.newsletter.beehiivRssUrl, 24);
+const localIssueNumbers = new Set(issues.map((issue) => issue.data.issueNumber));
+const archiveEntries = [
+  ...issues.map((issue) => ({
+    href: `/newsletter/${issue.slug}`,
+    title: issue.data.title,
+    issueNumber: issue.data.issueNumber,
+    pubDate: issue.data.pubDate,
+    description: issue.data.description,
+  })),
+  ...beehiivPosts
+    .filter((post) => !localIssueNumbers.has(post.issueNumber))
+    .map((post) => ({
+      href: `/newsletter/${post.issueNumber}`,
+      title: post.title === newsletterName ? `${post.description} #${post.issueNumber}` : post.title,
+      issueNumber: post.issueNumber,
+      pubDate: post.pubDate,
+      description: post.excerpt,
+    })),
+].sort((first, second) => second.pubDate.getTime() - first.pubDate.getTime());
 ---
 
 <Layout
@@ -38,44 +56,24 @@ const newsletterName = "Mechascopic's Dispatch";
     <h1>{newsletterName} Archive</h1>
     <p>Browse every published issue. Click a title to open the full post on this site.</p>
 
-    {issues.length === 0 && beehiivPosts.length === 0 ? (
+    {archiveEntries.length === 0 ? (
       <p>No issues are published yet.</p>
-    ) : issues.length > 0 ? (
-      <ul class="issue-list">
-        {issues.map((issue) => (
-          <li>
-            <article>
-              <h2>
-                <a href={`/newsletter/${issue.slug}`}>{issue.data.title}</a>
-              </h2>
-              <p class="meta">
-                Issue #{issue.data.issueNumber} · {issue.data.pubDate.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </p>
-              <p>{issue.data.description}</p>
-            </article>
-          </li>
-        ))}
-      </ul>
     ) : (
       <ul class="issue-list">
-        {beehiivPosts.map((post) => (
+        {archiveEntries.map((entry) => (
           <li>
             <article>
               <h2>
-                <a href={`/newsletter/${post.issueNumber}`}>{`${post.title} #${post.issueNumber}`}</a>
+                <a href={entry.href}>{entry.title}</a>
               </h2>
               <p class="meta">
-                {post.pubDate.toLocaleDateString("en-US", {
+                Issue #{entry.issueNumber} · {entry.pubDate.toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "numeric",
                 })}
               </p>
-              {post.excerpt && <p>{post.excerpt}</p>}
+              {entry.description && <p>{entry.description}</p>}
             </article>
           </li>
         ))}
